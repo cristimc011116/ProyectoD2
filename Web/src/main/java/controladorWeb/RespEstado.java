@@ -49,7 +49,7 @@ public class RespEstado extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         this.vista4 = new ConsultarEstadoCuenta();
         String numero =request.getParameter("numero");
@@ -57,101 +57,118 @@ public class RespEstado extends HttpServlet {
         String moneda = request.getParameter("moneda");
         int contador = 0;
         int insertar = 0;
-        contador += validarIngreso(numero, "cuenta");
-        contador += validarIngreso(pin, "pin");
-        contador += validarIngreso(moneda, "moneda");
-        if(contador==0){
-            insertar += validarCuentaPin2(numero, pin);
-            if(insertar==0){
-                Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
-                ConsultaMoneda consulta = new ConsultaMoneda();
-                int idDueno = CuentaDAO.obtenerPersonaCuenta(numero);
-                String strIdDueno = Integer.toString(idDueno);
-                String strSaldoColones = cuenta.getSaldo();
-                double saldoColones = Double.parseDouble(strSaldoColones);
-                double montoCorrec = montoMoneda(saldoColones, moneda);
-                String strMontoCorrec = Double.toString(montoCorrec);
-                Persona persona = PersonaDAO.obtenerPersona(idDueno);
-                String nombreDueno = persona.getNombre() + " " + persona.getPrimerApellido() + " " + persona.getSegundoApellido();
-                ArrayList<Operacion> operaciones = OperacionDAO.getOperacionesCuenta(numero);
-                try ( PrintWriter out = response.getWriter()) {
-                    /* TODO output your page here. You may use following sample code. */
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
+        {
+            contador += validarIngreso(numero, "cuenta");
+            contador += validarIngreso(pin, "pin");
+            contador += validarIngreso(moneda, "moneda");
+            if(contador==0){
+                insertar += validarCuentaPin2(numero, pin);
+                if(insertar==0){
+                    Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
+                    ConsultaMoneda consulta = new ConsultaMoneda();
+                    int idDueno = CuentaDAO.obtenerPersonaCuenta(numero);
+                    String strIdDueno = Integer.toString(idDueno);
+                    String strSaldoColones = cuenta.getSaldo();
+                    double saldoColones = Double.parseDouble(strSaldoColones);
+                    double montoCorrec = montoMoneda(saldoColones, moneda);
+                    String strMontoCorrec = Double.toString(montoCorrec);
+                    Persona persona = PersonaDAO.obtenerPersona(idDueno);
+                    String nombreDueno = persona.getNombre() + " " + persona.getPrimerApellido() + " " + persona.getSegundoApellido();
+                    ArrayList<Operacion> operaciones = OperacionDAO.getOperacionesCuenta(numero);
+                    try ( PrintWriter out = response.getWriter()) {
+                        /* TODO output your page here. You may use following sample code. */
+                        out.println("<!DOCTYPE html>");
+                        out.println("<html>");
+                        out.println("<head>");
+                        out.println("<title>Estado de cuenta</title>");            
+                        out.println("</head>");
+                        out.println("<body>");
+                        out.println("<h2 align=\"center\">Estado de cuenta</h2>");
+                        out.println("<br>");
+                        out.println("<br>");
+                        out.println("<br>");
+                        out.println("<h3 align=\"center\">Número de cuenta: " + numero + "</h3>");
+                        out.println("<h3 align=\"center\">Pin de la cuenta: " + cuenta.getPin() + "</h3>");
+                        out.println("<h3 align=\"center\">Saldo de la cuenta: " + montoCorrec + "</h3>");
+                        out.println("<h3 align=\"center\">Identificación del dueño: " + idDueno + "</h3>");
+                        out.println("<h3 align=\"center\">Nombre del dueño: " + nombreDueno + "</h3>");
+                        out.println("<table border=\"1\" align=\"center\">");
+                        out.println("<tr>");
+                        out.println("<td>Fecha</td>");
+                        out.println("<td>Tipo</td>");
+                        out.println("<td>Comision</td>");
+                        for(Operacion operacion: operaciones)
+                        {
+                          if("colones".equals(moneda))
+                          {
+                            out.println("<tr>");
+                            out.println("<td>"+ operacion.getFechaOperacion() +"</td>");
+                            out.println("<td>"+ operacion.getTipo() +"</td>");
+                            out.println("<td>"+ operacion.getMontoComision() +"</td>");
+                            out.println("</tr>");
+                          }
+                          else
+                          {
+                            double venta = consulta.consultaCambioVenta();
+                            double comisionDolares = (operacion.getMontoComision()/venta);
+                            out.println("<tr>");
+                            out.println("<td>"+ operacion.getFechaOperacion() +"</td>");
+                            out.println("<td>"+ operacion.getTipo() +"</td>");
+                            out.println("<td>"+ comisionDolares +"</td>");
+                            out.println("</tr>");
+                          }
+                        }
+                        out.println("</table>");
+                        out.println("</body>");
+                        out.println("</html>");
+                    }
+
+                }else{
+                    try ( PrintWriter out = response.getWriter()) {
                     out.println("<!DOCTYPE html>");
                     out.println("<html>");
                     out.println("<head>");
-                    out.println("<title>Estado de cuenta</title>");            
+                    out.println("<title>Error</title>");            
                     out.println("</head>");
                     out.println("<body>");
-                    out.println("<h2 align=\"center\">Estado de cuenta</h2>");
-                    out.println("<br>");
-                    out.println("<br>");
-                    out.println("<br>");
-                    out.println("<h3 align=\"center\">Número de cuenta: " + numero + "</h3>");
-                    out.println("<h3 align=\"center\">Pin de la cuenta: " + cuenta.getPin() + "</h3>");
-                    out.println("<h3 align=\"center\">Saldo de la cuenta: " + montoCorrec + "</h3>");
-                    out.println("<h3 align=\"center\">Identificación del dueño: " + idDueno + "</h3>");
-                    out.println("<h3 align=\"center\">Nombre del dueño: " + nombreDueno + "</h3>");
-                    out.println("<table border=\"1\" align=\"center\">");
-                    out.println("<tr>");
-                    out.println("<td>Fecha</td>");
-                    out.println("<td>Tipo</td>");
-                    out.println("<td>Comision</td>");
-                    for(Operacion operacion: operaciones)
-                    {
-                      if("colones".equals(moneda))
-                      {
-                        out.println("<tr>");
-                        out.println("<td>"+ operacion.getFechaOperacion() +"</td>");
-                        out.println("<td>"+ operacion.getTipo() +"</td>");
-                        out.println("<td>"+ operacion.getMontoComision() +"</td>");
-                        out.println("</tr>");
-                      }
-                      else
-                      {
-                        double venta = consulta.consultaCambioVenta();
-                        double comisionDolares = (operacion.getMontoComision()/venta);
-                        out.println("<tr>");
-                        out.println("<td>"+ operacion.getFechaOperacion() +"</td>");
-                        out.println("<td>"+ operacion.getTipo() +"</td>");
-                        out.println("<td>"+ comisionDolares +"</td>");
-                        out.println("</tr>");
-                      }
-                    }
-                    out.println("</table>");
+                    out.println("<h1 align=\"center\">Error en cuenta o pin</h1>");
                     out.println("</body>");
                     out.println("</html>");
                 }
-                
+                }
             }else{
                 try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Error en cuenta o pin</h1>");
-                out.println("</body>");
-                out.println("</html>");
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
             }
-            }
-        }else{
+        }
+        else{
             try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
-                out.println("</body>");
-                out.println("</html>");
-            }
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
         
     }
     
-    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
+    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -175,7 +192,7 @@ public class RespEstado extends HttpServlet {
         return 1;
     }
     
-    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuenta2(pNumCuenta, pPin))
       {
@@ -184,7 +201,7 @@ public class RespEstado extends HttpServlet {
       return 1;
     }
     
-    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
+    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
        
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -203,7 +220,7 @@ public class RespEstado extends HttpServlet {
         if(cont >= 2)
         {
           //this.vista4.lbintentos.setText("2");
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
@@ -231,6 +248,8 @@ public class RespEstado extends HttpServlet {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RespEstado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(RespEstado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -248,6 +267,8 @@ public class RespEstado extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RespEstado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(RespEstado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

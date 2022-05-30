@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class Mensaje {
     public static final String ACCOUNT_SID = "AC99990d2f368c631048e2be792a0653cd";
-    public static final String AUTH_TOKEN = "2faf6486087b2b104c4c763082fbbf96";
+    public static final String AUTH_TOKEN = "";
     /**
      * @param args the command line arguments
      */

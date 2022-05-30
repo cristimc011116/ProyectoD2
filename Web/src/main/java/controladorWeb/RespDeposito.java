@@ -6,6 +6,7 @@ package controladorWeb;
 
 import static CLI.CLI.montoValidoDeposito;
 import controlador.ControladorUsuario;
+import dao.CuentaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -40,28 +41,45 @@ public class RespDeposito extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
         String monto = request.getParameter("monto");
-        double montoD = Double.parseDouble(monto);
         String moneda = request.getParameter("moneda");
-        double montoCorrecto = montoValidoDeposito(montoD, numero, moneda);
-        double comision = ControladorUsuario.aplicaComision(numero, montoCorrecto);
-        Operacion.realizarDeposito(montoD, moneda, numero);
-        String resultado = ControladorUsuario.imprimirResultadoDeposito(moneda, comision, montoCorrecto,numero);
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Realizar depósito</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<br>");
-            out.println("<h2 align=\"center\">Resultado del depósito</h2>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<h3 align=\"center\">" + resultado + "</h3>");
-            out.println("</body>");
-            out.println("</html>");
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
+        {
+            double montoD = Double.parseDouble(monto);
+            double montoCorrecto = montoValidoDeposito(montoD, numero, moneda);
+            double comision = ControladorUsuario.aplicaComision(numero, montoCorrecto);
+            Operacion.realizarDeposito(montoD, moneda, numero);
+            String resultado = ControladorUsuario.imprimirResultadoDeposito(moneda, comision, montoCorrecto,numero);
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Realizar depósito</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<br>");
+                out.println("<h2 align=\"center\">Resultado del depósito</h2>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<h3 align=\"center\">" + resultado + "</h3>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+        }
+        else{
+            try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
     }
 

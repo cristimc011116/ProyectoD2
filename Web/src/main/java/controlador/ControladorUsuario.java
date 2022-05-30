@@ -154,7 +154,9 @@ public class ControladorUsuario implements ActionListener{
                     enviarPalabraTransferencia();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -164,7 +166,9 @@ public class ControladorUsuario implements ActionListener{
                     retirar();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -174,7 +178,9 @@ public class ControladorUsuario implements ActionListener{
                     consultarEstadoCuentaP1();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -187,7 +193,9 @@ public class ControladorUsuario implements ActionListener{
                     cambiarPIN();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -234,7 +242,9 @@ public class ControladorUsuario implements ActionListener{
                     consultarSaldoCuenta();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -254,7 +264,9 @@ public class ControladorUsuario implements ActionListener{
                     transferir();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -307,7 +319,9 @@ public class ControladorUsuario implements ActionListener{
                     enviarPalabra();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (Exception ex) {
+                Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }
                 break;
 
@@ -431,7 +445,7 @@ public class ControladorUsuario implements ActionListener{
     }
 
     //FUNCIONALIDADES----------------------------------------------------------------------------------------------------------------------------------
-    public void cambiarPIN() throws ClassNotFoundException
+    public void cambiarPIN() throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       int contador =0;
@@ -504,7 +518,7 @@ public class ControladorUsuario implements ActionListener{
       }   
     }
     
-    public void consultarSaldoCuenta() throws ClassNotFoundException   
+    public void consultarSaldoCuenta() throws ClassNotFoundException, Exception   
     {
       String cuenta = this.vista8.txtNumCuenta.getText();
       Cuenta cuentaBase = CuentaDAO.obtenerCuenta(cuenta);
@@ -558,7 +572,7 @@ public class ControladorUsuario implements ActionListener{
       } 
     }
     
-    public void enviarPalabra() throws ClassNotFoundException
+    public void enviarPalabra() throws ClassNotFoundException, Exception
     {
       this.palabra = new Palabra();
       int insertar = 0;
@@ -588,7 +602,7 @@ public class ControladorUsuario implements ActionListener{
       }
     }   
     
-        public void enviarPalabraTransferencia() throws ClassNotFoundException
+        public void enviarPalabraTransferencia() throws ClassNotFoundException, Exception
     {
       this.palabra = new Palabra();
       int insertar = 0;
@@ -618,7 +632,7 @@ public class ControladorUsuario implements ActionListener{
       }
     }   
     
-    public void retirar() throws ClassNotFoundException   
+    public void retirar() throws ClassNotFoundException, Exception   
     {
       String cuenta = this.vista3.txtCuenta.getText();
       Cuenta cuentaBase = CuentaDAO.obtenerCuenta(cuenta);
@@ -668,7 +682,7 @@ public class ControladorUsuario implements ActionListener{
       }   
     }
     
-    public void transferir() throws ClassNotFoundException   
+    public void transferir() throws ClassNotFoundException, Exception   
     {
       String cuentaDestino = this.vista13.txtCuentaDestino .getText();
       Cuenta cuentaBaseDestino = CuentaDAO.obtenerCuenta(cuentaDestino);
@@ -846,7 +860,7 @@ public class ControladorUsuario implements ActionListener{
       this.menu.setVisible(false);
     }
     
-    public void consultarEstadoCuentaP1() throws ClassNotFoundException{
+    public void consultarEstadoCuentaP1() throws ClassNotFoundException, Exception{
       int insertar = 0;
       int contador = 0;
       String mensaje;
@@ -1055,7 +1069,7 @@ public class ControladorUsuario implements ActionListener{
       return 0;
     }
     
-    public int validarPalabra(String pPalabra, String pNumCuenta) throws ClassNotFoundException
+    public int validarPalabra(String pPalabra, String pNumCuenta) throws ClassNotFoundException, Exception
     {
       if(pedirPalabra(pPalabra, pNumCuenta))
       {
@@ -1067,7 +1081,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarPalabraTransferencia(String pPalabra, String pNumCuenta) throws ClassNotFoundException
+    public int validarPalabraTransferencia(String pPalabra, String pNumCuenta) throws ClassNotFoundException, Exception
     {
       if(pedirPalabraTransferencia(pPalabra, pNumCuenta))
       {
@@ -1090,7 +1104,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public boolean esPinCuenta(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuenta(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1106,7 +1120,7 @@ public class ControladorUsuario implements ActionListener{
         if(contador >= 2)
         {
           this.vista3.txtIntPin.setText("2");
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
@@ -1118,7 +1132,7 @@ public class ControladorUsuario implements ActionListener{
       return true;
     }
     
-    public boolean esPinCuentaTransferencia(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuentaTransferencia(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1134,7 +1148,7 @@ public class ControladorUsuario implements ActionListener{
         if(contador >= 2)
         {
           this.vista13.txtIntPin.setText("2");
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
@@ -1146,7 +1160,7 @@ public class ControladorUsuario implements ActionListener{
       return true;
     }
     
-    public boolean esPinCuentaCambioPin(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuentaCambioPin(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1162,7 +1176,7 @@ public class ControladorUsuario implements ActionListener{
         if(contador >= 2)
         {
           this.vista6.lblCantIntentosFall.setText("2");
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
@@ -1174,7 +1188,7 @@ public class ControladorUsuario implements ActionListener{
       return true;
     }
     
-    public boolean esPinCuentaConsultaSaldo(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuentaConsultaSaldo(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1190,7 +1204,7 @@ public class ControladorUsuario implements ActionListener{
         if(contador >= 2)
         {
           this.vista8.lblFallosPin.setText("2");
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
@@ -1202,7 +1216,7 @@ public class ControladorUsuario implements ActionListener{
       return true;
     }
     
-    public boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1219,7 +1233,7 @@ public class ControladorUsuario implements ActionListener{
         if(contador >= 2)
         {
           this.vista4.lbintentos.setText("2");
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
@@ -1284,7 +1298,7 @@ public class ControladorUsuario implements ActionListener{
       return monto;
     }
     
-    public int validarPin(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public int validarPin(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuenta(pNumCuenta, pPin))
       {
@@ -1293,7 +1307,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarPinTransferencia(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public int validarPinTransferencia(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuentaTransferencia(pNumCuenta, pPin))
       {
@@ -1302,7 +1316,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarPinCambio(String pNumCuenta, String pPin, String pinNuevo) throws ClassNotFoundException
+    public int validarPinCambio(String pNumCuenta, String pPin, String pinNuevo) throws ClassNotFoundException, Exception
     {
       if(esPinCuentaCambioPin(pNumCuenta, pPin) & ExpresionesRegulares.validarPin(pinNuevo))
       {
@@ -1311,7 +1325,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuenta2(pNumCuenta, pPin))
       {
@@ -1320,7 +1334,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarPinSaldo(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public int validarPinSaldo(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuentaConsultaSaldo(pNumCuenta, pPin))
       {
@@ -1416,7 +1430,7 @@ public class ControladorUsuario implements ActionListener{
       return 0;
     }
     
-    public int validarCuentaPin(String numCuenta, String pin) throws ClassNotFoundException
+    public int validarCuentaPin(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -1432,7 +1446,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarCuentaPinTransferencia(String numCuenta, String pin) throws ClassNotFoundException
+    public int validarCuentaPinTransferencia(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -1450,7 +1464,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarCuentaPinSaldo(String numCuenta, String pin) throws ClassNotFoundException
+    public int validarCuentaPinSaldo(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -1465,7 +1479,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
+    public int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -1480,7 +1494,7 @@ public class ControladorUsuario implements ActionListener{
       return 1;
     }
     
-    public int validarCuentaPinCambio(String numCuenta, String pin, String pinNuevo) throws ClassNotFoundException
+    public int validarCuentaPinCambio(String numCuenta, String pin, String pinNuevo) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -1539,7 +1553,7 @@ public class ControladorUsuario implements ActionListener{
     }
     
     //PEDIDOS DE INFORMACIÓN---------------------------------------------------------------------------------------------------------------------------
-    public boolean pedirPalabra(String pPalabra, String pNumCuenta) throws ClassNotFoundException
+    public boolean pedirPalabra(String pPalabra, String pNumCuenta) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1554,7 +1568,7 @@ public class ControladorUsuario implements ActionListener{
         this.vista3.txtIntPalabra.setText(cont);
         if(contador >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto de la palabra clave");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso incorrecto de la palabra clave");
         }
         else
@@ -1569,7 +1583,7 @@ public class ControladorUsuario implements ActionListener{
       return true;
     }
     
-    public boolean pedirPalabraTransferencia(String pPalabra, String pNumCuenta) throws ClassNotFoundException
+    public boolean pedirPalabraTransferencia(String pPalabra, String pNumCuenta) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -1584,7 +1598,7 @@ public class ControladorUsuario implements ActionListener{
         this.vista13.txtIntPalabra.setText(cont);
         if(contador >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto de la palabra clave");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso incorrecto de la palabra clave");
         }
         else

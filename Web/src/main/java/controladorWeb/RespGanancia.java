@@ -42,34 +42,51 @@ public class RespGanancia extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
-        double sumaD = Operacion.sumarComisionesdepositos(numero);
-        double sumaR = Operacion.sumarComisionesRetiros(numero);
-        double sumaT = sumaD + sumaR;
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Consulta de banco por cuenta</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1 align=\"center\">Consulta de ganancias por comisiones del banco por cuenta</h1>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<table border=\"1\" align=\"center\">");
-            out.println("<tr>");
-            out.println("<td align=\"center\">La suma por depositos es de: "+ sumaD + "</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<td align=\"center\">La suma por retiros es de: "+ sumaR + "</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<td align=\"center\">La suma total es de: "+ sumaT + "</td>");
-            out.println("</tr>");
-            out.println("</table>");
-            out.println("</body>");
-            out.println("</html>");
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
+        {
+            double sumaD = Operacion.sumarComisionesdepositos(numero);
+            double sumaR = Operacion.sumarComisionesRetiros(numero);
+            double sumaT = sumaD + sumaR;
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Consulta de banco por cuenta</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1 align=\"center\">Consulta de ganancias por comisiones del banco por cuenta</h1>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<table border=\"1\" align=\"center\">");
+                out.println("<tr>");
+                out.println("<td align=\"center\">La suma por depositos es de: "+ sumaD + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<td align=\"center\">La suma por retiros es de: "+ sumaR + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<td align=\"center\">La suma total es de: "+ sumaT + "</td>");
+                out.println("</tr>");
+                out.println("</table>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+        }
+        else{
+            try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
     }
 

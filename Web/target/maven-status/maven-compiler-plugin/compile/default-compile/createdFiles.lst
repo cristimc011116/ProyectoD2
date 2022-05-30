@@ -1,6 +1,4 @@
 GUI\CrearCuenta$3.class
-controladorWeb\RespRetiro.class
-controladorWeb\RealizarTransferencia.class
 GUI\ConsultarStatus$3.class
 GUI\CambiarPIN$2.class
 GUI\ConsultaGananciaBancoTotal$1.class
@@ -10,8 +8,6 @@ controladorWeb\MostrarCliente.class
 GUI\RealizarRetiro$4.class
 controladorWeb\RespGanancia.class
 GUI\ConsultaGananciaBancoTotal.class
-CLI\CLI.class
-controlador\ControladorUsuario.class
 GUI\ListarCuentas$4.class
 GUI\CrearCliente$3.class
 controladorWeb\GananciaComisionCuenta.class
@@ -20,7 +16,6 @@ GUI\ListarPersonas$3.class
 GUI\Menu$3.class
 GUI\Menu$6.class
 GUI\RealizarDeposito$2.class
-controladorWeb\RespTransferir.class
 GUI\CrearCliente$4.class
 GUI\CambiarPIN.class
 GUI\ConsultarStatus$1.class
@@ -58,7 +53,6 @@ GUI\CrearCliente$5.class
 GUI\RealizarRetiro$5.class
 webService\ConexionBCCR.class
 controladorWeb\GananciaComisionTotal.class
-controladorWeb\RespCambioPin.class
 controladorWeb\RealizarDeposito.class
 dao\OperacionDAO.class
 util\Mensaje.class
@@ -74,7 +68,6 @@ GUI\RealizarDeposito$1.class
 GUI\ListarCuentas$3.class
 GUI\ConsultarEstadoCuentaP2$1.class
 controladorWeb\EstadoCuenta.class
-controladorWeb\RespEstado.class
 controladorWeb\EnviarPalabraRetiro.class
 controladorWeb\RespEstatus.class
 GUI\ConsultarStatus$2.class
@@ -89,7 +82,6 @@ controladorWeb\ListarCuentas.class
 GUI\ConsultarCambioDolar$2.class
 GUI\ConsultaGananciaBancoCuenta$4.class
 GUI\ConsultarCambioDolar.class
-controladorWeb\RespSaldo.class
 GUI\Menu.class
 GUI\ConsultaGananciaBancoTotal$3.class
 GUI\ConsultarSaldo$3.class
@@ -122,7 +114,6 @@ dao\CuentaDAO.class
 GUI\CrearCliente$2.class
 controladorWeb\ConsultarTipoCompra.class
 GUI\RealizarRetiro$2.class
-controladorWeb\RealizarRetiro.class
 GUI\ConsultarEstadoCuentaP2$2.class
 GUI\ConsultarStatus$4.class
 GUI\RealizarDeposito.class

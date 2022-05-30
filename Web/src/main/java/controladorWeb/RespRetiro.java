@@ -46,7 +46,7 @@ public class RespRetiro extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
         String pin =request.getParameter("pin");
@@ -56,69 +56,86 @@ public class RespRetiro extends HttpServlet {
         String palabraClave = request.getParameter("Respuesta");
         int insertar = 0;
         int contador = 0;
-        contador += validarIngreso(numero, "cuenta");
-        contador += validarIngreso(pin, "pin");
-        contador += validarIngreso(palabra, "palabra clave");
-        contador += validarIngreso(monto, "monto");
-        contador += validarEntrMonto(monto);
-
-        if(contador == 0)
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
         {
-          insertar += validarCuentaPin2(numero, pin);
-          insertar += validarPalabra(palabra, numero, palabraClave);
-          if (insertar == 0)
-          {
-            double montoD = Double.parseDouble(monto);
-            double montoCorrecto = montoValido(montoD, numero, moneda);
-            Operacion.realizarRetiro(montoD, moneda, numero);
-            double comision = ControladorUsuario.aplicaComisionRetiro(numero, montoCorrecto, 4);
-            String resultado = ControladorUsuario.imprimirResultado(moneda, comision, montoCorrecto);
-            try ( PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Retiro</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<br>");
-                out.println("<h2 align=\"center\">Resultado del retiro</h2>");
-                out.println("<br>");
-                out.println("<br>");
-                out.println("<br>");
-                out.println("<h3 align=\"center\">" + resultado + "</h3>");
-                out.println("</body>");
-                out.println("</html>");
-          }
-        }else{
+            contador += validarIngreso(numero, "cuenta");
+            contador += validarIngreso(pin, "pin");
+            contador += validarIngreso(palabra, "palabra clave");
+            contador += validarIngreso(monto, "monto");
+            contador += validarEntrMonto(monto);
+
+            if(contador == 0)
+            {
+              insertar += validarCuentaPin2(numero, pin);
+              insertar += validarPalabra(palabra, numero, palabraClave);
+              if (insertar == 0)
+              {
+                double montoD = Double.parseDouble(monto);
+                double montoCorrecto = montoValido(montoD, numero, moneda);
+                Operacion.realizarRetiro(montoD, moneda, numero);
+                double comision = ControladorUsuario.aplicaComisionRetiro(numero, montoCorrecto, 4);
+                String resultado = ControladorUsuario.imprimirResultado(moneda, comision, montoCorrecto);
                 try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Verifique sus datos por favor</h1>");
-                out.println("</body>");
-                out.println("</html>");
+                    /* TODO output your page here. You may use following sample code. */
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Retiro</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<br>");
+                    out.println("<h2 align=\"center\">Resultado del retiro</h2>");
+                    out.println("<br>");
+                    out.println("<br>");
+                    out.println("<br>");
+                    out.println("<h3 align=\"center\">" + resultado + "</h3>");
+                    out.println("</body>");
+                    out.println("</html>");
+              }
+            }else{
+                    try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Verifique sus datos por favor</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+                }
+            }else{
+                try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
             }
-            }
-        }else{
+        }
+        else{
             try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
-                out.println("</body>");
-                out.println("</html>");
-            }
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
     }
           
-    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
+    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -142,7 +159,7 @@ public class RespRetiro extends HttpServlet {
         return 1;
     }
     
-    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuenta2(pNumCuenta, pPin))
       {
@@ -151,7 +168,7 @@ public class RespRetiro extends HttpServlet {
       return 1;
     }
     
-    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
+    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
        
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -164,7 +181,7 @@ public class RespRetiro extends HttpServlet {
 
         if(contPin >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         return false;
@@ -172,7 +189,7 @@ public class RespRetiro extends HttpServlet {
       return true;
     }
     
-    public int validarPalabra(String pPalabra, String pNumCuenta, String palabraClave) throws ClassNotFoundException
+    public int validarPalabra(String pPalabra, String pNumCuenta, String palabraClave) throws ClassNotFoundException, Exception
     {
       if(pedirPalabra(pPalabra, pNumCuenta, palabraClave))
       {
@@ -181,7 +198,7 @@ public class RespRetiro extends HttpServlet {
       return 1;
     }
     
-    public boolean pedirPalabra(String pPalabra, String pNumCuenta, String palabraClave) throws ClassNotFoundException
+    public boolean pedirPalabra(String pPalabra, String pNumCuenta, String palabraClave) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String cont;
@@ -192,7 +209,7 @@ public class RespRetiro extends HttpServlet {
         contPalabra++;
         if(contPalabra >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto de la palabra clave");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso incorrecto de la palabra clave");
         }
         return false;
@@ -216,6 +233,8 @@ public class RespRetiro extends HttpServlet {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RespRetiro.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(RespRetiro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -233,6 +252,8 @@ public class RespRetiro extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RespRetiro.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(RespRetiro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

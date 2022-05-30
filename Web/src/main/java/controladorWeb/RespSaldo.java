@@ -41,69 +41,86 @@ public class RespSaldo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
         String pin = request.getParameter("pin");
         String moneda = request.getParameter("moneda");
         int contador = 0;
         int insertar = 0; 
-        contador += validarIngreso(numero, "cuenta");
-        contador += validarIngreso(pin, "pin");
-        if(contador == 0)
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
         {
-          insertar += validarCuentaPinSaldo(numero, pin);
-          if (insertar == 0)
-          {
-            Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
-            String saldo = cuenta.getSaldo();
-            String resultado = ControladorUsuario.imprimirResultadoConsultaSaldo( moneda,  saldo);
-            try ( PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>El resultado de la consulta es: </title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<br>");
-                out.println("<h2 align=\"center\">Consulta de saldo</h2>");
-                out.println("<br>");
-                out.println("<br>");
-                out.println("<br>");
-                out.println("<h3 align=\"center\">" + resultado + "</h3>");
-                out.println("</body>");
-                out.println("</html>");
-            }
-          }else{
+            contador += validarIngreso(numero, "cuenta");
+            contador += validarIngreso(pin, "pin");
+            if(contador == 0)
+            {
+              insertar += validarCuentaPinSaldo(numero, pin);
+              if (insertar == 0)
+              {
+                Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
+                String saldo = cuenta.getSaldo();
+                String resultado = ControladorUsuario.imprimirResultadoConsultaSaldo( moneda,  saldo);
                 try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Verifique sus datos por favor</h1>");
-                out.println("</body>");
-                out.println("</html>");
+                    /* TODO output your page here. You may use following sample code. */
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>El resultado de la consulta es: </title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<br>");
+                    out.println("<h2 align=\"center\">Consulta de saldo</h2>");
+                    out.println("<br>");
+                    out.println("<br>");
+                    out.println("<br>");
+                    out.println("<h3 align=\"center\">" + resultado + "</h3>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+              }else{
+                    try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Verifique sus datos por favor</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+                }
+            }else{
+                try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
             }
-            }
-        }else{
+        }
+        else{
             try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
-                out.println("</body>");
-                out.println("</html>");
-            }
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
     }
     
-    public int validarCuentaPinSaldo(String numCuenta, String pin) throws ClassNotFoundException
+    public int validarCuentaPinSaldo(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -127,7 +144,7 @@ public class RespSaldo extends HttpServlet {
         return 1;
     }
     
-    public int validarPinSaldo(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public int validarPinSaldo(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuentaConsultaSaldo(pNumCuenta, pPin))
       {
@@ -136,7 +153,7 @@ public class RespSaldo extends HttpServlet {
       return 1;
     }
     
-    public boolean esPinCuentaConsultaSaldo(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuentaConsultaSaldo(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String pinDesencriptado = Encriptacion.desencriptar(cuenta.getPin());
@@ -146,7 +163,7 @@ public class RespSaldo extends HttpServlet {
 
         if(cont >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         return false;
@@ -170,6 +187,8 @@ public class RespSaldo extends HttpServlet {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RespSaldo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(RespSaldo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -187,6 +206,8 @@ public class RespSaldo extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RespSaldo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(RespSaldo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

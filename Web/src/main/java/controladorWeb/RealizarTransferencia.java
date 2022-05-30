@@ -39,97 +39,114 @@ public class RealizarTransferencia extends HttpServlet {
      */
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
         String pin = request.getParameter("pin");
         int contador = 0;
         int insertar = 0;
-        contador += validarIngreso(numero, "cuenta");
-        contador += validarIngreso(pin, "pin");
-        if(contador==0){
-            insertar += validarCuentaPin2(numero, pin);
-            if(insertar==0){
-                String mensaje = Operacion.enviarMensaje(numero);
-                try ( PrintWriter out = response.getWriter()) {
-                    /* TODO output your page here. You may use following sample code. */
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
+        {
+            contador += validarIngreso(numero, "cuenta");
+            contador += validarIngreso(pin, "pin");
+            if(contador==0){
+                insertar += validarCuentaPin2(numero, pin);
+                if(insertar==0){
+                    String mensaje = Operacion.enviarMensaje(numero);
+                    try ( PrintWriter out = response.getWriter()) {
+                        /* TODO output your page here. You may use following sample code. */
+                        out.println("<!DOCTYPE html>");
+                        out.println("<html>");
+                        out.println("<head>");
+                        out.println("<title>Realizar transferencia</title>");            
+                        out.println("</head>");
+                        out.println("<body>");
+                        out.println("<h1 align=\"center\">Proceda a realizar la transferencia</h1>");
+                        out.println("<br>");
+                        out.println("<br>");
+                        out.println("<div align=\"center\">Complete los datos</div>");
+                        out.println("<br>");
+
+                        out.println("<form action=\"respTransferencia\" method=\"post\">");
+                        out.println("<table border=\"1\" align=\"center\">");
+                        out.println("<tr>");
+                        out.println("<td>Digite el numero de cuenta</td>");
+                        out.println("<td><input type=\"text\" name=\"numero\"/></td>");
+                        out.println("</tr>");
+                        out.println("<tr>");
+                        out.println("<td>Digite el pin de la cuenta</td>");
+                        out.println("<td><input type=\"text\" name=\"pin\"/></td>");
+                        out.println("</tr>");
+                        out.println("<tr>");
+                        out.println("<td>Digite la palabra previamente enviada</td>");
+                        out.println("<td><input type=\"text\" name=\"palabra\"/></td>");
+                        out.println("</tr>");
+                        out.println("<tr>");
+                        out.println("<td>Digite el monto a tranferir</td>");
+                        out.println("<td><input type=\"text\" name=\"monto\"/></td>");
+                        out.println("</tr>");
+                         out.println("<tr>");
+                        out.println("<td>Digite la cuenta de destino</td>");
+                        out.println("<td><input type=\"text\" name=\"cuentaDestino\"/></td>");
+                        out.println("</tr>");
+
+                        out.println("<tr>");
+                        out.println("<td>Marque si posee los datos completos</td>");
+                        out.println("<td><input name=\"Respuesta\" type=\"radio\" value=\""+mensaje+"\"></td>");
+                        out.println("</tr>");
+
+                        out.println("<tr>");
+                        out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"transferir\"/></td>");
+                        out.println("</tr>");
+                        out.println("</table>");
+                        out.println("</form>");
+                        out.println("</body>");
+                        out.println("</html>");
+                    }
+                }else{
+                    try ( PrintWriter out = response.getWriter()) {
                     out.println("<!DOCTYPE html>");
                     out.println("<html>");
                     out.println("<head>");
-                    out.println("<title>Realizar transferencia</title>");            
+                    out.println("<title>Error</title>");            
                     out.println("</head>");
                     out.println("<body>");
-                    out.println("<h1 align=\"center\">Proceda a realizar la transferencia</h1>");
-                    out.println("<br>");
-                    out.println("<br>");
-                    out.println("<div align=\"center\">Complete los datos</div>");
-                    out.println("<br>");
-
-                    out.println("<form action=\"respTransferencia\" method=\"post\">");
-                    out.println("<table border=\"1\" align=\"center\">");
-                    out.println("<tr>");
-                    out.println("<td>Digite el numero de cuenta</td>");
-                    out.println("<td><input type=\"text\" name=\"numero\"/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td>Digite el pin de la cuenta</td>");
-                    out.println("<td><input type=\"text\" name=\"pin\"/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td>Digite la palabra previamente enviada</td>");
-                    out.println("<td><input type=\"text\" name=\"palabra\"/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td>Digite el monto a tranferir</td>");
-                    out.println("<td><input type=\"text\" name=\"monto\"/></td>");
-                    out.println("</tr>");
-                     out.println("<tr>");
-                    out.println("<td>Digite la cuenta de destino</td>");
-                    out.println("<td><input type=\"text\" name=\"cuentaDestino\"/></td>");
-                    out.println("</tr>");
-                    
-                    out.println("<tr>");
-                    out.println("<td>Marque si posee los datos completos</td>");
-                    out.println("<td><input name=\"Respuesta\" type=\"radio\" value=\""+mensaje+"\"></td>");
-                    out.println("</tr>");
-                    
-                    out.println("<tr>");
-                    out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"transferir\"/></td>");
-                    out.println("</tr>");
-                    out.println("</table>");
-                    out.println("</form>");
+                    out.println("<h1 align=\"center\">Error en cuenta o pin</h1>");
                     out.println("</body>");
                     out.println("</html>");
                 }
+                }
             }else{
                 try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Error en cuenta o pin</h1>");
-                out.println("</body>");
-                out.println("</html>");
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
             }
-            }
-        }else{
+        }
+        else{
             try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
-                out.println("</body>");
-                out.println("</html>");
-            }
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
     }
     
-    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
+    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -153,7 +170,7 @@ public class RealizarTransferencia extends HttpServlet {
         return 1;
     }
     
-    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException, Exception
     {
       if(esPinCuenta2(pNumCuenta, pPin))
       {
@@ -162,7 +179,7 @@ public class RealizarTransferencia extends HttpServlet {
       return 1;
     }
     
-    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
+    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
        
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -175,7 +192,7 @@ public class RealizarTransferencia extends HttpServlet {
 
         if(cont >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         return false;
@@ -199,6 +216,8 @@ public class RealizarTransferencia extends HttpServlet {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RealizarTransferencia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(RealizarTransferencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -216,6 +235,8 @@ public class RealizarTransferencia extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RealizarTransferencia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(RealizarTransferencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

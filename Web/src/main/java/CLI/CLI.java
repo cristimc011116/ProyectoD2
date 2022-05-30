@@ -30,7 +30,7 @@ import util.Encriptacion;
 public class CLI {
     //Operacion operacion = new Operacion();
     //MENU----------------------------------------------------------------------------------------------------------------------------------------
-    public static void main(String[] args) throws ClassNotFoundException
+    public static void main(String[] args) throws ClassNotFoundException, Exception
     {
         Scanner sc = new Scanner (System.in);
         System.out.println("Bienvenido al gestor de cuentas\nDigite la funcionalidad que desea realizar:\n1.Registrar un cliente"
@@ -70,7 +70,7 @@ public class CLI {
     }
     
     //FUNCIONALIDADES----------------------------------------------------------------------------------------------------------------------------------
-    public static  void cambiarPIN(String opcion) throws ClassNotFoundException
+    public static  void cambiarPIN(String opcion) throws ClassNotFoundException, Exception
     {
       if ("5".equals(opcion))
       {
@@ -105,7 +105,7 @@ public class CLI {
       }
     }
     
-    public static void realizarDeposito(String opcion) throws ClassNotFoundException
+    public static void realizarDeposito(String opcion) throws ClassNotFoundException, Exception
     {
       if ("6".equals(opcion))
         depositar("colones");
@@ -113,7 +113,7 @@ public class CLI {
         depositar("dolares");
     }
     
-    public static void depositar(String moneda) throws ClassNotFoundException
+    public static void depositar(String moneda) throws ClassNotFoundException, Exception
     {
       String pNumCuenta = pedirNumCuenta();
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -138,7 +138,7 @@ public class CLI {
       }
     }
     
-    public static void consultaSaldo(String moneda) throws ClassNotFoundException
+    public static void consultaSaldo(String moneda) throws ClassNotFoundException, Exception
     {
       String pNumCuenta = pedirNumCuenta();
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -166,7 +166,7 @@ public class CLI {
       }
     }
     
-    public static void ConsultaGananciaBanco(String opcion) throws ClassNotFoundException
+    public static void ConsultaGananciaBanco(String opcion) throws ClassNotFoundException, Exception
     {
       double sumaRetiros =0;
       double sumaDepositos =0;
@@ -262,7 +262,7 @@ public class CLI {
       return sumaComisiones;
     }
     
-    public static String retirar(String moneda) throws ClassNotFoundException
+    public static String retirar(String moneda) throws ClassNotFoundException, Exception
     {
         String pNumCuenta = pedirNumCuenta();
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -313,7 +313,7 @@ public class CLI {
     }
     
     
-        public static String transferencia() throws ClassNotFoundException
+        public static String transferencia() throws ClassNotFoundException, Exception
     {
         //ingresar cuenta
         System.out.println("¿Cual es la cuenta origen de la que desea tranferir?");
@@ -373,7 +373,7 @@ public class CLI {
     }
           
     
-    public static String consultarEstado(String moneda) throws ClassNotFoundException
+    public static String consultarEstado(String moneda) throws ClassNotFoundException, Exception
     {
         String pNumCuenta = pedirNumCuenta();
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
@@ -404,7 +404,7 @@ public class CLI {
     
     
     
-    public static void crearCuenta(String opcion) throws ClassNotFoundException
+    public static void crearCuenta(String opcion) throws ClassNotFoundException, Exception
     //public static void main(String[] args)
     {
         if ("2".equals(opcion))
@@ -426,7 +426,7 @@ public class CLI {
     
     }
     
-        public static void crearCliente(String opcion) throws ClassNotFoundException
+        public static void crearCliente(String opcion) throws ClassNotFoundException, Exception
     {
         if ("1".equals(opcion))
         {
@@ -465,7 +465,7 @@ public class CLI {
     }
 
         
-    public static void listarCuentas() throws ClassNotFoundException{
+    public static void listarCuentas() throws ClassNotFoundException, Exception{
         Persona consulta = new Persona();
         ArrayList<Cuenta> cuentas = CuentaDAO.getCuentasBD();
         Collections.sort(cuentas);
@@ -484,7 +484,7 @@ public class CLI {
     }
 
     
-    public static void  listarPersonas(String opcion) throws ClassNotFoundException
+    public static void  listarPersonas(String opcion) throws ClassNotFoundException, Exception
     {
         Scanner sc = new Scanner (System.in);
         if("3".equals(opcion))
@@ -505,7 +505,7 @@ public class CLI {
     
     //Opciones de menú ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-    public static void ConsultarSaldoActual(String opcion) throws ClassNotFoundException
+    public static void ConsultarSaldoActual(String opcion) throws ClassNotFoundException, Exception
     {
       if("13".equals(opcion))
       {
@@ -544,7 +544,7 @@ public class CLI {
       System.out.println(resultado);
     }
     
-    public static void  MenulistarCuentas(String opcion) throws ClassNotFoundException
+    public static void  MenulistarCuentas(String opcion) throws ClassNotFoundException, Exception
     {
         Scanner sc = new Scanner (System.in);
         if("4".equals(opcion))
@@ -554,7 +554,7 @@ public class CLI {
         }   
     }
     
-    public static void seleccionarPersona() throws ClassNotFoundException
+    public static void seleccionarPersona() throws ClassNotFoundException, Exception
     {
         Scanner sc = new Scanner (System.in);
         System.out.println("Digite 1 si desea consultar a un usuario en específico, o 0 si desea volver al menú principal");
@@ -579,7 +579,7 @@ public class CLI {
         
     }
     
-        public static void seleccionarCuenta() throws ClassNotFoundException
+        public static void seleccionarCuenta() throws ClassNotFoundException, Exception
     {
         Scanner sc = new Scanner (System.in);
         System.out.println("Digite 1 si desea consultar a una cuenta en específico, o 0 si desea volver al menú principal");
@@ -605,7 +605,7 @@ public class CLI {
     }
     
     
-    public static void seleccionarMonedaRetiro(String opcion) throws ClassNotFoundException
+    public static void seleccionarMonedaRetiro(String opcion) throws ClassNotFoundException, Exception
     {
         if("8".equals(opcion))
         {
@@ -618,7 +618,7 @@ public class CLI {
     }
     
     
-    public static void seleccionarMonedaEstado(String opcion) throws ClassNotFoundException
+    public static void seleccionarMonedaEstado(String opcion) throws ClassNotFoundException, Exception
     {
         if("15".equals(opcion))
         {
@@ -630,7 +630,7 @@ public class CLI {
         }
     }
     
-        public static void realizarTransferencia(String opcion) throws ClassNotFoundException
+        public static void realizarTransferencia(String opcion) throws ClassNotFoundException, Exception
     {
         if("10".equals(opcion))
         {
@@ -703,7 +703,7 @@ public class CLI {
         return strNombre;
     }
     
-    public static String esPinCuenta(String pNumCuenta) throws ClassNotFoundException
+    public static String esPinCuenta(String pNumCuenta) throws ClassNotFoundException, Exception
     {
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
         Scanner sc = new Scanner (System.in);
@@ -717,7 +717,7 @@ public class CLI {
             cont++;
             if(cont >= 2)
             {
-                Cuenta.inactivarCuenta(pNumCuenta);
+                Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
                 return ("Se ha desactivado la cuenta");
             }
             String texto3 = "Digite el pin de la cuenta de manera válida: ";
@@ -920,7 +920,7 @@ public class CLI {
         return strNumCuenta;
     }
     
-    public static String pedirPalabra(String pPalabra, String pNumCuenta) throws ClassNotFoundException
+    public static String pedirPalabra(String pPalabra, String pNumCuenta) throws ClassNotFoundException, Exception
     {
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
         Scanner sc = new Scanner (System.in);
@@ -933,7 +933,7 @@ public class CLI {
             cont++;
             if(cont >= 2)
             {
-                Cuenta.inactivarCuenta(pNumCuenta);
+                Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto de la palabra clave");
                 return ("Se ha desactivado la cuenta");
             }
             else
@@ -952,7 +952,7 @@ public class CLI {
     
     
     //OTROS--------------------------------------------------------------------------------------------------------------------------------------------
-    public static void volverMenu() throws ClassNotFoundException{
+    public static void volverMenu() throws ClassNotFoundException, Exception{
         Scanner sc = new Scanner (System.in);
         System.out.println("Desea volver al menú: 1.Sí 2.No");
         String op = sc.next();

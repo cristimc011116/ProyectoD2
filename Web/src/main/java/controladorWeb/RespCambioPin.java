@@ -41,70 +41,88 @@ public class RespCambioPin extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
         String pinA = request.getParameter("pinA");
         String pinN = request.getParameter("pinN");
         int contador = 0;
         int insertar = 0;
-        contador += validarIngreso(numero, "cuenta");
-        contador += validarIngreso(pinA, "pin actual");
-        contador += validarIngreso(pinN, "pin nuevo");
-        if(contador == 0)
+        Cuenta cuentaBase = CuentaDAO.obtenerCuenta(numero);
+        if(!"inactiva".equals(cuentaBase.getEstatus()))
         {
-          insertar += validarCuentaPinCambio(numero,  pinA, pinN);
-          if (insertar == 0){
-            Operacion.cambiarPIN(numero, pinN);
-            try ( PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Cambio PIN</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Cambio de PIN a cuenta</h1>");
-                out.println("<br>");
-                out.println("<br>");
-                out.println("<br>");
-                out.println("<table border=\"1\" align=\"center\">");
-                out.println("<tr>");
-                out.println("<td align=\"center\">Estimado usuario, se ha cambiado satisfactoriamente el PIN de su cuenta " + numero + "</td>");
-                out.println("</tr>");
-                out.println("</table>");
-                out.println("</body>");
-                out.println("</html>");
-            }
-          }else{
+            contador += validarIngreso(numero, "cuenta");
+            contador += validarIngreso(pinA, "pin actual");
+            contador += validarIngreso(pinN, "pin nuevo");
+            if(contador == 0)
+            {
+              insertar += validarCuentaPinCambio(numero,  pinA, pinN);
+              if (insertar == 0){
+                Operacion.cambiarPIN(numero, pinN);
                 try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Verifique sus datos</h1>");
-                out.println("</body>");
-                out.println("</html>");
-            }
-            }
-        }else{
-            try ( PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Error</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
-                out.println("</body>");
-                out.println("</html>");
+                    /* TODO output your page here. You may use following sample code. */
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Cambio PIN</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Cambio de PIN a cuenta</h1>");
+                    out.println("<br>");
+                    out.println("<br>");
+                    out.println("<br>");
+                    out.println("<table border=\"1\" align=\"center\">");
+                    out.println("<tr>");
+                    out.println("<td align=\"center\">Estimado usuario, se ha cambiado satisfactoriamente el PIN de su cuenta " + numero + "</td>");
+                    out.println("</tr>");
+                    out.println("</table>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+              }else{
+                    try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Verifique sus datos</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+                }
+            }else{
+                try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
             }
         }
+        else{
+            try ( PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Error</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1 align=\"center\">Su cuenta se encuentra desactivada</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+        }
+        
     }
     
-    public int validarCuentaPinCambio(String numCuenta, String pin, String pinNuevo) throws ClassNotFoundException
+    public int validarCuentaPinCambio(String numCuenta, String pin, String pinNuevo) throws ClassNotFoundException, Exception
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -128,7 +146,7 @@ public class RespCambioPin extends HttpServlet {
         return 1;
     }
     
-    public int validarPinCambio(String pNumCuenta, String pPin, String pinNuevo) throws ClassNotFoundException
+    public int validarPinCambio(String pNumCuenta, String pPin, String pinNuevo) throws ClassNotFoundException, Exception
     {
       if(esPinCuentaCambioPin(pNumCuenta, pPin) & ExpresionesRegulares.validarPin(pinNuevo))
       {
@@ -137,7 +155,7 @@ public class RespCambioPin extends HttpServlet {
       return 1;
     }
     
-    public boolean esPinCuentaCambioPin(String pNumCuenta, String pin) throws ClassNotFoundException
+    public boolean esPinCuentaCambioPin(String pNumCuenta, String pin) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String pinDesencriptado = Encriptacion.desencriptar(cuenta.getPin());
@@ -147,7 +165,7 @@ public class RespCambioPin extends HttpServlet {
 
         if(cont >= 2)
         {
-          Cuenta.inactivarCuenta(pNumCuenta);
+          Cuenta.inactivarCuenta(pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin");
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         return false;
@@ -173,6 +191,8 @@ public class RespCambioPin extends HttpServlet {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RespCambioPin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(RespCambioPin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -190,6 +210,8 @@ public class RespCambioPin extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RespCambioPin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(RespCambioPin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

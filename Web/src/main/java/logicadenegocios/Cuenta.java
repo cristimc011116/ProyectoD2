@@ -14,6 +14,7 @@ import java.util.Collections;
 import javax.swing.JOptionPane;
 import util.CorreoElectronico;
 import util.Encriptacion;
+import static util.Translator.traducir;
 /**
  *
  * @author Cristi Martínez
@@ -80,14 +81,16 @@ public class Cuenta implements Comparable<Cuenta>{
         return cuentasSistema;
     }
     
-    public static void inactivarCuenta(String pNumCuenta) throws ClassNotFoundException
+    public static void inactivarCuenta(String pNumCuenta, String mensaje) throws ClassNotFoundException, Exception
     {
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       int id = CuentaDAO.obtenerPersonaCuenta(pNumCuenta);
       Persona persona = PersonaDAO.obtenerPersona(id);
       String correo = persona.getCorreo();
       cuenta.setEstatus("inactiva");
-      CorreoElectronico.enviarCorreo(correo, "Inactivación de cuenta: " + pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin o la palabra clave");
+      String traducido = traducir(mensaje);
+      //CorreoElectronico.enviarCorreo(correo, "Inactivación de cuenta: " + pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin o la palabra clave");
+      CorreoElectronico.enviarCorreo(correo, "Inactivación de cuenta: " + pNumCuenta, mensaje + "\n" + traducido);
       CuentaDAO.inactivarCuentaBase(pNumCuenta);
     }
     
