@@ -23,7 +23,7 @@ public class AdmiDAO {
         boolean estaRegistrada = false;
         ConexionBase con = new ConexionBase();
         con.obtenerConexion();
-        ResultSet buscarAdmi = con.consultas("SELECT COUNT(*) FROM Administrador WHERE usuario = " + usuario);
+        ResultSet buscarAdmi = con.consultas("SELECT * FROM Administrador WHERE usuario = " + "'" + usuario + "'");
         if(buscarAdmi == null){
             return false;
         }
@@ -33,7 +33,7 @@ public class AdmiDAO {
     public static Boolean buscarContraseña(String usuario, String contraseña) throws ClassNotFoundException{
         ConexionBase con = new ConexionBase();
         con.obtenerConexion();
-        ResultSet buscar = con.consultas("SELECT * FROM Administrador WHERE usuario = " + usuario);
+        ResultSet buscar = con.consultas("SELECT * FROM Administrador WHERE usuario = " + "'" + usuario + "'");
         try{
             while(buscar.next()){
               String EsContraseña = (buscar.getString("contrasena"));
