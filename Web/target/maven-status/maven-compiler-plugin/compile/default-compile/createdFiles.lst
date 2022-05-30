@@ -103,6 +103,7 @@ GUI\CrearCliente$1.class
 GUI\ListarPersonas$1.class
 GUI\RealizarDeposito$3.class
 controladorWeb\ConsultarTipoVenta.class
+dao\AdmiDAO.class
 GUI\RealizarRetiro$1.class
 GUI\ConsultaGananciaBancoCuenta$3.class
 GUI\Menu$5.class

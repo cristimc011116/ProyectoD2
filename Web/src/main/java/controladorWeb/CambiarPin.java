@@ -56,7 +56,7 @@ public class CambiarPin extends HttpServlet {
             out.println("<td><input type=\"text\" name=\"pinA\"/></td>");
             out.println("</tr>");
             out.println("<tr>");
-            out.println("<td>Digite el pin actual</td>");
+            out.println("<td>Digite el pin nuevo</td>");
             out.println("<td><input type=\"text\" name=\"pinN\"/></td>");
             out.println("</tr>");
             out.println("<tr>");

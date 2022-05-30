@@ -6,7 +6,12 @@ package controladorWeb;
 
 import static CLI.CLI.montoValido;
 import static CLI.CLI.montoValidoDeposito;
+import GUI.Palabra;
 import controlador.ControladorUsuario;
+import static controlador.ControladorUsuario.auxNumCuentaP1;
+import static controladorWeb.MostrarCuenta.validarEntrMonto;
+import static controladorWeb.MostrarCuenta.validarIngreso;
+import dao.CuentaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -20,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.JOptionPane;
 import logicadenegocios.Cuenta;
 import logicadenegocios.Operacion;
+import util.Encriptacion;
 
 /**
  *
@@ -27,6 +33,9 @@ import logicadenegocios.Operacion;
  */
 @WebServlet(name = "respRetiro", urlPatterns = {"/respRetiro"})
 public class RespRetiro extends HttpServlet {
+    static int contPin = 0;
+    static int contPalabra = 0;
+    public Palabra palabra;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,29 +52,152 @@ public class RespRetiro extends HttpServlet {
         String pin =request.getParameter("pin");
         String palabra =request.getParameter("palabra");
         String monto = request.getParameter("monto");
-        double montoD = Double.parseDouble(monto);
         String moneda = request.getParameter("moneda");
-        double montoCorrecto = montoValido(montoD, numero, moneda);
-        Operacion.realizarRetiro(montoD, moneda, numero);
-        double comision = ControladorUsuario.aplicaComisionRetiro(numero, montoCorrecto, 4);
-        String resultado = ControladorUsuario.imprimirResultado(moneda, comision, montoCorrecto);
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Retiro</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<br>");
-            out.println("<h2 align=\"center\">Resultado del retiro</h2>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<h3 align=\"center\">" + resultado + "</h3>");
-            out.println("</body>");
-            out.println("</html>");
+        String palabraClave = request.getParameter("Respuesta");
+        int insertar = 0;
+        int contador = 0;
+        contador += validarIngreso(numero, "cuenta");
+        contador += validarIngreso(pin, "pin");
+        contador += validarIngreso(palabra, "palabra clave");
+        contador += validarIngreso(monto, "monto");
+        contador += validarEntrMonto(monto);
+
+        if(contador == 0)
+        {
+          insertar += validarCuentaPin2(numero, pin);
+          insertar += validarPalabra(palabra, numero, palabraClave);
+          if (insertar == 0)
+          {
+            double montoD = Double.parseDouble(monto);
+            double montoCorrecto = montoValido(montoD, numero, moneda);
+            Operacion.realizarRetiro(montoD, moneda, numero);
+            double comision = ControladorUsuario.aplicaComisionRetiro(numero, montoCorrecto, 4);
+            String resultado = ControladorUsuario.imprimirResultado(moneda, comision, montoCorrecto);
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Retiro</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<br>");
+                out.println("<h2 align=\"center\">Resultado del retiro</h2>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<h3 align=\"center\">" + resultado + "</h3>");
+                out.println("</body>");
+                out.println("</html>");
+          }
+        }else{
+                try ( PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Error</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1 align=\"center\">Verifique sus datos por favor</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+            }
+        }else{
+            try ( PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Error</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
         }
+    }
+          
+    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
+    {
+      int insertar = 0;
+      insertar += validarEntrCuenta(numCuenta);
+      if(insertar==0)
+      {
+        insertar += validarPin2(numCuenta, pin);
+        if(insertar==0)
+        {
+          return 0;
+        }
+      }
+      return 1;
+    }
+    
+    public static int validarEntrCuenta(String numCuenta) throws ClassNotFoundException
+    {
+        if(auxNumCuentaP1(numCuenta))
+        {
+            return 0;
+        }
+        return 1;
+    }
+    
+    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
+    {
+      if(esPinCuenta2(pNumCuenta, pPin))
+      {
+        return 0;
+      }
+      return 1;
+    }
+    
+    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
+    {
+       
+      Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
+      int contador;
+      String pinDesencriptado = Encriptacion.desencriptar(cuenta.getPin());
+      
+      if (!pin.equals(pinDesencriptado))
+      {
+          contPin++;
+
+        if(contPin >= 2)
+        {
+          Cuenta.inactivarCuenta(pNumCuenta);
+          JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
+        }
+        return false;
+      }
+      return true;
+    }
+    
+    public int validarPalabra(String pPalabra, String pNumCuenta, String palabraClave) throws ClassNotFoundException
+    {
+      if(pedirPalabra(pPalabra, pNumCuenta, palabraClave))
+      {
+        return 0;
+      }
+      return 1;
+    }
+    
+    public boolean pedirPalabra(String pPalabra, String pNumCuenta, String palabraClave) throws ClassNotFoundException
+    {
+      Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
+      String cont;
+      int contador;
+      String mensaje = "";
+      if (!pPalabra.equals(palabraClave))
+      {
+        contPalabra++;
+        if(contPalabra >= 2)
+        {
+          Cuenta.inactivarCuenta(pNumCuenta);
+          JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso incorrecto de la palabra clave");
+        }
+        return false;
+      }
+      return true;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

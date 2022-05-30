@@ -38,6 +38,7 @@ import webService.ConsultaMoneda;
 @WebServlet(name = "respEstado", urlPatterns = {"/respEstado"})
 public class RespEstado extends HttpServlet {
     public ConsultarEstadoCuenta vista4;
+    static int cont = 0;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -122,12 +123,6 @@ public class RespEstado extends HttpServlet {
                 }
                 
             }else{
-                int insertar1 = 0;
-                String mensaje = "";
-                insertar1 += validarCuentaPin2(numero, pin);
-                if(insertar1==1){
-                    mensaje += "cuenta o pin";
-                }
                 try ( PrintWriter out = response.getWriter()) {
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
@@ -135,7 +130,7 @@ public class RespEstado extends HttpServlet {
                 out.println("<title>Error</title>");            
                 out.println("</head>");
                 out.println("<body>");
-                out.println("<h1 align=\"center\">Error en: " + mensaje + "</h1>");
+                out.println("<h1 align=\"center\">Error en cuenta o pin</h1>");
                 out.println("</body>");
                 out.println("</html>");
             }
@@ -156,7 +151,7 @@ public class RespEstado extends HttpServlet {
         
     }
     
-    public int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
+    public static int validarCuentaPin2(String numCuenta, String pin) throws ClassNotFoundException
     {
       int insertar = 0;
       insertar += validarEntrCuenta(numCuenta);
@@ -171,7 +166,7 @@ public class RespEstado extends HttpServlet {
       return 1;
     }
     
-    public int validarEntrCuenta(String numCuenta) throws ClassNotFoundException
+    public static int validarEntrCuenta(String numCuenta) throws ClassNotFoundException
     {
         if(auxNumCuentaP1(numCuenta))
         {
@@ -180,7 +175,7 @@ public class RespEstado extends HttpServlet {
         return 1;
     }
     
-    public int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
+    public static int validarPin2(String pNumCuenta, String pPin) throws ClassNotFoundException
     {
       if(esPinCuenta2(pNumCuenta, pPin))
       {
@@ -189,30 +184,31 @@ public class RespEstado extends HttpServlet {
       return 1;
     }
     
-    public boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
+    public static boolean esPinCuenta2(String pNumCuenta, String pin) throws ClassNotFoundException
     {
        
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
-      String cont;
+      //String cont;
       int contador;
       String pinDesencriptado = Encriptacion.desencriptar(cuenta.getPin());
       
       if (!pin.equals(pinDesencriptado))
       {
-        cont = this.vista4.lbintentos.getText();
-        contador = Integer.parseInt(cont);
-        contador++;
-        cont = Integer.toString(contador);
+        //cont = this.vista4.lbintentos.getText();
+        //contador = Integer.parseInt(cont);
+        //contador++;
+          cont++;
+        //cont = Integer.toString(contador);
 
-        if(contador >= 2)
+        if(cont >= 2)
         {
-          this.vista4.lbintentos.setText("2");
+          //this.vista4.lbintentos.setText("2");
           Cuenta.inactivarCuenta(pNumCuenta);
           JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
         }
         else
         {
-          this.vista4.lbintentos.setText(cont);
+          //this.vista4.lbintentos.setText(cont);
         }
         return false;
       }

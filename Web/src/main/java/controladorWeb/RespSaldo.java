@@ -6,6 +6,8 @@ package controladorWeb;
 
 import static CLI.CLI.montoValidoDeposito;
 import controlador.ControladorUsuario;
+import static controlador.ControladorUsuario.auxNumCuentaP1;
+import static controladorWeb.MostrarCuenta.validarIngreso;
 import dao.CuentaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.JOptionPane;
 import logicadenegocios.Cuenta;
 import logicadenegocios.Operacion;
+import util.Encriptacion;
 
 /**
  *
@@ -27,6 +30,7 @@ import logicadenegocios.Operacion;
  */
 @WebServlet(name = "respSaldo", urlPatterns = {"/respSaldo"})
 public class RespSaldo extends HttpServlet {
+    static int cont = 0; 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,28 +44,114 @@ public class RespSaldo extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         String numero =request.getParameter("numero");
-        String id = request.getParameter("id");
+        String pin = request.getParameter("pin");
         String moneda = request.getParameter("moneda");
-        Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
-        String saldo = cuenta.getSaldo();
-        String resultado = ControladorUsuario.imprimirResultadoConsultaSaldo( moneda,  saldo);
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>El resultado de la consulta es: </title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<br>");
-            out.println("<h2 align=\"center\">Consulta de saldo</h2>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<h3 align=\"center\">" + resultado + "</h3>");
-            out.println("</body>");
-            out.println("</html>");
+        int contador = 0;
+        int insertar = 0; 
+        contador += validarIngreso(numero, "cuenta");
+        contador += validarIngreso(pin, "pin");
+        if(contador == 0)
+        {
+          insertar += validarCuentaPinSaldo(numero, pin);
+          if (insertar == 0)
+          {
+            Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
+            String saldo = cuenta.getSaldo();
+            String resultado = ControladorUsuario.imprimirResultadoConsultaSaldo( moneda,  saldo);
+            try ( PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>El resultado de la consulta es: </title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<br>");
+                out.println("<h2 align=\"center\">Consulta de saldo</h2>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<br>");
+                out.println("<h3 align=\"center\">" + resultado + "</h3>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+          }else{
+                try ( PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Error</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1 align=\"center\">Verifique sus datos por favor</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
+            }
+        }else{
+            try ( PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Error</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1 align=\"center\">Complete todos sus datos</h1>");
+                out.println("</body>");
+                out.println("</html>");
+            }
         }
+    }
+    
+    public int validarCuentaPinSaldo(String numCuenta, String pin) throws ClassNotFoundException
+    {
+      int insertar = 0;
+      insertar += validarEntrCuenta(numCuenta);
+      if(insertar==0)
+      {
+        insertar += validarPinSaldo(numCuenta, pin);
+        if(insertar==0)
+        {
+           return 0;
+        }
+      }
+      return 1;
+    }
+    
+    public int validarEntrCuenta(String numCuenta) throws ClassNotFoundException
+    {
+        if(auxNumCuentaP1(numCuenta))
+        {
+            return 0;
+        }
+        return 1;
+    }
+    
+    public int validarPinSaldo(String pNumCuenta, String pPin) throws ClassNotFoundException
+    {
+      if(esPinCuentaConsultaSaldo(pNumCuenta, pPin))
+      {
+        return 0;
+      }
+      return 1;
+    }
+    
+    public boolean esPinCuentaConsultaSaldo(String pNumCuenta, String pin) throws ClassNotFoundException
+    {
+      Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
+      String pinDesencriptado = Encriptacion.desencriptar(cuenta.getPin());
+      if (!pin.equals(pinDesencriptado))
+      {
+        cont++;
+
+        if(cont >= 2)
+        {
+          Cuenta.inactivarCuenta(pNumCuenta);
+          JOptionPane.showMessageDialog(null, "Se ha desactivado la cuenta por el ingreso del pin incorrecto");
+        }
+        return false;
+      }
+      return true;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
