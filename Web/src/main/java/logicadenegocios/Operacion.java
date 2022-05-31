@@ -24,6 +24,7 @@ public class Operacion {
     private String tipo;
     private boolean comision;
     private double montoComision;
+    private ArrayList<Bitacora> bitacoras;
     Cuenta cuenta = new Cuenta();
 
 //-----------------------------------------------CONSTRUCTOR-----------------------------------------    
@@ -38,12 +39,27 @@ public class Operacion {
     }
 
   public Operacion() {
-  
+    bitacoras = new ArrayList();
   }
-    
+   
 
 //------------------------------------------METODOS DE CLASE----------------------------------------    
-    public static void cambiarPIN(String pCuenta, String pPinNuevo) throws ClassNotFoundException
+    
+  public void agregarBitacora(Bitacora pBitacoras)
+  {
+    bitacoras.add(pBitacoras);
+  }
+  
+  public void crearBitacoras(String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta)
+  {
+    String direccionArchivo = "C:/Users/Josue/OneDrive/Documentos/TEC/V semestre 2022/Diseño de software/Elementos XML/";
+    for (int i=0;i<bitacoras.size();i++)
+    {
+      bitacoras.get(i).update( direccionArchivo,  pFecha,  pHora,  pOperacion,  pVista,  pNumCuenta, String.valueOf(i));
+    }
+  }
+  
+  public static void cambiarPIN(String pCuenta, String pPinNuevo) throws ClassNotFoundException
     {
       CuentaDAO.actualizarPin(pCuenta, pPinNuevo);
     }

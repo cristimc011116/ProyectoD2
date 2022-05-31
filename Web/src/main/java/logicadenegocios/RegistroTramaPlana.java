@@ -12,9 +12,15 @@ import java.io.FileWriter;
  *
  * @author Josue
  */
-public class RegistroTramaPlana {
+public class RegistroTramaPlana extends Bitacora{
   
-    public static void RegistroTramaPlana(String ruta, String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero)
+  public void RegistroTramaPlana(Operacion pOperacion)
+  {
+    bitacora = pOperacion;
+    bitacora.agregarBitacora(this);
+  }
+  
+    public void update(String ruta, String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero)
   {
     String registro = "";
     

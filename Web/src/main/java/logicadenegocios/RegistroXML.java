@@ -21,9 +21,15 @@ import org.w3c.dom.Element;
  *
  * @author Josue
  */
-public class RegistroXML {
+public class RegistroXML extends Bitacora{
  
-  public static void Bitacoraxml(String ubicacion,String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero)
+  public void RegistroXML(Operacion pOperacion)
+  {
+    bitacora = pOperacion;
+    bitacora.agregarBitacora(this);
+  }
+  
+  public void update(String ubicacion,String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero)
   {
     try {
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

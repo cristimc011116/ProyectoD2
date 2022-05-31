@@ -11,9 +11,15 @@ import java.io.IOException;
  *
  * @author Josue
  */
-public class RegistroCSV {
+public class RegistroCSV extends Bitacora{
   
-  public static void crearArchivoCSV(String file, String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero) {
+  public void registroCSV(Operacion pOperacion)
+  {
+    bitacora = pOperacion;
+    bitacora.agregarBitacora(this);
+  }
+  
+  public void update(String file, String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero) {
 		final String NEXT_LINE = "\n";
     String delim = ",";
 		try {
