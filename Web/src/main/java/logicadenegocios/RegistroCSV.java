@@ -6,6 +6,7 @@ package logicadenegocios;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  *
@@ -19,7 +20,7 @@ public class RegistroCSV extends Bitacora{
     bitacora.agregarBitacora(this);
   }
   
-  public void update(String file, String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero) {
+  public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero) {
 		final String NEXT_LINE = "\n";
     String delim = ",";
 		try {
@@ -27,7 +28,7 @@ public class RegistroCSV extends Bitacora{
       
 			fw.append(pNumCuenta);
 			fw.append(delim);
-			fw.append(pFecha);
+			fw.append(pFecha.toString());
       fw.append(delim);
 			fw.append(pHora);
       fw.append(delim);

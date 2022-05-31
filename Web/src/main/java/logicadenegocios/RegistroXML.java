@@ -5,6 +5,7 @@
 package logicadenegocios;
 
 import java.io.File;
+import java.time.LocalDate;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,7 +30,7 @@ public class RegistroXML extends Bitacora{
     bitacora.agregarBitacora(this);
   }
   
-  public void update(String ubicacion,String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero)
+  public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero)
   {
     try {
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -47,7 +48,7 @@ public class RegistroXML extends Bitacora{
       nodo.setAttributeNode(attr);
 
       Element fecha = doc.createElement("Fecha");
-      fecha.setTextContent(pFecha);
+      fecha.setTextContent(pFecha.toString());
       rootElement.appendChild(fecha);
 
       Element hora = doc.createElement("Hora");
@@ -66,7 +67,7 @@ public class RegistroXML extends Bitacora{
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource source = new DOMSource(doc);
-      StreamResult result = new StreamResult(new File(ubicacion+"RegistroXML"+numero+".xml"));
+      StreamResult result = new StreamResult(new File(file+"RegistroXML"+numero+".xml"));
       transformer.transform(source, result);
     } catch (ParserConfigurationException pce) {
       pce.printStackTrace();

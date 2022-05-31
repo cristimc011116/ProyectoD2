@@ -7,6 +7,7 @@ package logicadenegocios;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.time.LocalDate;
 
 /**
  *
@@ -20,24 +21,24 @@ public class RegistroTramaPlana extends Bitacora{
     bitacora.agregarBitacora(this);
   }
   
-    public void update(String ruta, String pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,String numero)
+    public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero)
   {
     String registro = "";
     
     registro = AgregarNumCuenta(registro, pNumCuenta);
-    registro = AgregarFecha( registro, pFecha);
+    registro = AgregarFecha( registro, pFecha.toString());
     registro = AgregarHora( registro, pHora);
     registro = AgregarOperacion( registro, pOperacion);
     registro = AgregarVista( registro, pVista);
     
     try {
       String contenido = registro;
-      File file = new File(ruta+"RegistroTramaPlana"+numero+".txt");
+      File file1 = new File(file+"RegistroTramaPlana"+numero+".txt");
       // Si el archivo no existe es creado
-      if (!file.exists()) {
-          file.createNewFile();
+      if (!file1.exists()) {
+          file1.createNewFile();
       }
-      FileWriter fw = new FileWriter(file);
+      FileWriter fw = new FileWriter(file1);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write(contenido);
       bw.close();
