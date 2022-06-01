@@ -13,12 +13,12 @@ import java.time.LocalDate;
  *
  * @author Josue
  */
-public class RegistroTramaPlana extends Bitacora{
+public class RegistroTramaPlana{
   
   public void RegistroTramaPlana(Operacion pOperacion)
   {
-    bitacora = pOperacion;
-    bitacora.agregarBitacora(this);
+    //bitacora = pOperacion;
+    //bitacora.agregarBitacora(this);
   }
   
     public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero)

@@ -12,12 +12,12 @@ import java.time.LocalDate;
  *
  * @author Josue
  */
-public class RegistroCSV extends Bitacora{
+public class RegistroCSV{
   
   public void registroCSV(Operacion pOperacion)
   {
-    bitacora = pOperacion;
-    bitacora.agregarBitacora(this);
+    //bitacora = pOperacion;
+    //bitacora.agregarBitacora(this);
   }
   
   public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero) {

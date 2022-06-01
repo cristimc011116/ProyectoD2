@@ -28,8 +28,8 @@ public class Cuenta implements Comparable<Cuenta>{
     private Persona dueno;
     private ArrayList<Operacion> operaciones;
     
-    private int exchangeRate;
-    private ArrayList<Bitacora> observers;
+    private static Operacion exchangeRate;
+    private static ArrayList<Bitacora> observers;
   
     
 //---------------------------------------------CONSTRUCTORES-------------------------------------    
@@ -186,17 +186,21 @@ public class Cuenta implements Comparable<Cuenta>{
         this.dueno = dueno;
     }
 
-    public int getExchangeRate() {
+    public Operacion getExchangeRate() {
         return exchangeRate;
     }
 
-    public void setExchangeRate(int exchangeRate) {
-        this.exchangeRate = exchangeRate;
+    public static void setExchangeRate(Operacion pExchangeRate) {
+        System.out.println("ACAA2");
+        exchangeRate = pExchangeRate;
         notifyAllObservers();
+        System.out.println("ACAA3");
     }
     
-    public void notifyAllObservers(){
+    public static void notifyAllObservers(){
+        System.out.println(observers.size());
         for(int i=0; i<observers.size();i++){
+            
             observers.get(i).update();
         }
     }

@@ -51,11 +51,21 @@ public class Operacion {
     bitacoras.add(pBitacoras);
   }
   
-  public static void crearBitacoras(LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta) throws ClassNotFoundException
+  /*public static void crearBitacoras(LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta) throws ClassNotFoundException
   {
     int id = BitacoraDAO.cantBitacorasBD();
+    Operacion operacion = new Operacion();
     String direccionArchivo = "C:/Users/Josue/OneDrive/Documentos/TEC/V semestre 2022/Diseño de software/Elementos XML/";
-    update( direccionArchivo,  pFecha,  pHora,  pOperacion,  pVista,  pNumCuenta, id);
+    //update( direccionArchivo,  pFecha,  pHora,  pOperacion,  pVista,  pNumCuenta, id);
+    Cuenta.setExchangeRate(operacion);
+  }*/
+  
+  public static void crearBitacoras(Operacion operacion) throws ClassNotFoundException
+  {
+    //int id = BitacoraDAO.cantBitacorasBD();
+    String direccionArchivo = "C:/Users/Josue/OneDrive/Documentos/TEC/V semestre 2022/Diseño de software/Elementos XML/";
+    //update( direccionArchivo,  pFecha,  pHora,  pOperacion,  pVista,  pNumCuenta, id);
+    Cuenta.setExchangeRate(operacion);
   }
   
   public static void cambiarPIN(String pCuenta, String pPinNuevo) throws ClassNotFoundException
@@ -217,13 +227,13 @@ public class Operacion {
     {
       String direccionArchivo = "C:/Users/Josue/OneDrive/Documentos/TEC/V semestre 2022/Diseño de software/Elementos XML/";
       int id = OperacionDAO.cantOperacionesBD();
-      int idBitacora = BitacoraDAO.cantBitacorasBD();
+      //int idBitacora = BitacoraDAO.cantBitacorasBD();
       LocalDate fecha = Cuenta.setFechaCreacion();
       Operacion operacion = new Operacion(id, fecha, pTipo, pEsComision, pMontoComision);
       OperacionDAO.insertarOperacion(operacion,fecha);
       OperacionDAO.asignarOperacionCuenta(operacion, pNumCuenta);
-      BitacoraDAO.insertarBitacora( direccionArchivo, fecha,  "10:00",  pTipo,  "GUI",  pNumCuenta, idBitacora);
-      crearBitacoras( fecha,  "10:00", operacion.tipo,  "GUI",  pNumCuenta);
+      //BitacoraDAO.insertarBitacora( direccionArchivo, fecha,  "10:00",  pTipo,  "GUI",  pNumCuenta, idBitacora);
+      crearBitacoras(operacion);
     }
     
     public static double consultarGananciaCuentaBanco(String numCuenta) throws ClassNotFoundException{
