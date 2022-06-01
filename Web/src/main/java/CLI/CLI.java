@@ -28,6 +28,7 @@ import util.Encriptacion;
  * @author Cristi Martínez
  */
 public class CLI {
+    
     //Operacion operacion = new Operacion();
     //MENU----------------------------------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) throws ClassNotFoundException, Exception
