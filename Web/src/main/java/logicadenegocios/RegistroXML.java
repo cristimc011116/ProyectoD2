@@ -6,6 +6,8 @@ package logicadenegocios;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,13 +26,25 @@ import org.w3c.dom.Element;
  */
 public class RegistroXML extends Bitacora{
  
-  public void RegistroXML(Operacion pOperacion)
-  {
-    bitacora = pOperacion;
-    bitacora.agregarBitacora(this);
+  public RegistroXML(Cuenta pSubject){
+      subject = pSubject;
+      subject.attach(this);
   }
   
-  public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero)
+  public void update(){
+      try{
+          Operacion operacion = subject.getExchangeRate();
+          añadirBitacoraXML1(operacion, subject.getNumero());
+      }catch(Exception ex){
+          Logger.getLogger(RegistroXML.class.getName()).log(Level.SEVERE, null, ex);
+      }
+  }
+  
+  public void añadirBitacoraXML1(Operacion pOperacion, String pNumCuenta) throws Exception{
+      
+  }
+  
+  public void añadirBitacoraXML(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero)
   {
     try {
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

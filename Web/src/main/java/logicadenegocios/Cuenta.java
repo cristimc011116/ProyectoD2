@@ -27,6 +27,9 @@ public class Cuenta implements Comparable<Cuenta>{
     private String estatus;
     private Persona dueno;
     private ArrayList<Operacion> operaciones;
+    
+    private int exchangeRate;
+    private ArrayList<Bitacora> observers;
   
     
 //---------------------------------------------CONSTRUCTORES-------------------------------------    
@@ -38,6 +41,7 @@ public class Cuenta implements Comparable<Cuenta>{
         setSaldo(pSaldo);
         setEstatus(pEstatus);
         this.operaciones = new ArrayList<>();   
+        this.observers = new ArrayList<>();
     }
     
     public Cuenta(String pNumero, String pEstatus, String pSaldo)
@@ -46,6 +50,7 @@ public class Cuenta implements Comparable<Cuenta>{
         setSaldo(pSaldo);
         setEstatus(pEstatus);
         this.operaciones = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
 
     public Cuenta()
@@ -53,6 +58,7 @@ public class Cuenta implements Comparable<Cuenta>{
         setNumero("");
         setSaldo("");
         this.operaciones = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
     
     //--------------------------------------METODOS DE CLASE--------------------------------------
@@ -129,6 +135,10 @@ public class Cuenta implements Comparable<Cuenta>{
             return 1;
         }
     }
+    
+    public void attach(Bitacora pObserver){
+        observers.add(pObserver);
+    }
 
    
 //-------------------------------------METODOS ACCESORES------------------------------------------
@@ -175,6 +185,23 @@ public class Cuenta implements Comparable<Cuenta>{
     public void setDueno(Persona dueno) {
         this.dueno = dueno;
     }
+
+    public int getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(int exchangeRate) {
+        this.exchangeRate = exchangeRate;
+        notifyAllObservers();
+    }
+    
+    public void notifyAllObservers(){
+        for(int i=0; i<observers.size();i++){
+            observers.get(i).update();
+        }
+    }
+    
+    
     
     public String toString()
     {
