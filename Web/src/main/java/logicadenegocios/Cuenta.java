@@ -14,6 +14,7 @@ import java.util.Collections;
 import javax.swing.JOptionPane;
 import util.CorreoElectronico;
 import util.Encriptacion;
+import util.IdiomaCorreoDecorator;
 import static util.Translator.traducir;
 /**
  *
@@ -96,7 +97,7 @@ public class Cuenta implements Comparable<Cuenta>{
       cuenta.setEstatus("inactiva");
       String traducido = traducir(mensaje);
       //CorreoElectronico.enviarCorreo(correo, "Inactivación de cuenta: " + pNumCuenta, "Hola, se ha desactivado la cuenta por motivo del ingreso incorrecto del pin o la palabra clave");
-      CorreoElectronico.enviarCorreo(correo, "Inactivación de cuenta: " + pNumCuenta, mensaje + "\n" + traducido);
+      IdiomaCorreoDecorator.enviarCorreo(correo, "Inactivación de cuenta: " + pNumCuenta, mensaje);
       CuentaDAO.inactivarCuentaBase(pNumCuenta);
     }
     

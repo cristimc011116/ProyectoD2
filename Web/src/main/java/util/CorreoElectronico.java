@@ -10,7 +10,7 @@ import javax.mail.internet.*;
 import javax.activation.*;
 
 public class CorreoElectronico {
-    public static void enviarCorreo(String destinatario, String asunto, String cuerpo) {
+    public static void enviarCorreo(String destinatario, String asunto, String cuerpo) throws Exception{
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  
         props.put("mail.smtp.user", "gestorCuentas97");
