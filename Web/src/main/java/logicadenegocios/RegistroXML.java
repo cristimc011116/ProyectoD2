@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
  * @author Josue
  */
 public class RegistroXML extends Bitacora{
-  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosXML");
+  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosXML\\");
   public RegistroXML(Cuenta pSubject){
       subject = pSubject;
       subject.attach(this);

@@ -193,6 +193,8 @@ public class Cuenta implements Comparable<Cuenta>{
     public static void setExchangeRate(Operacion pExchangeRate) {
         System.out.println("ACAA2");
         exchangeRate = pExchangeRate;
+        Cuenta cuenta = new Cuenta("236050836", "activo", "12345");
+        RegistroXML registro = new RegistroXML(cuenta);
         notifyAllObservers();
         System.out.println("ACAA3");
     }
