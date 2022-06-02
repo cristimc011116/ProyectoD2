@@ -14,6 +14,7 @@ import com.opencsv.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,10 +24,11 @@ public class ConsultaBitacora {
      
     
 //------------------------------------IMPRIMIR TXT---------------------------------------------------------   
-    public static String imprimirArchivosTXT(int pCantArchivos) throws FileNotFoundException{
+    public static String imprimirArchivosTXT(ArrayList pCantArchivos) throws FileNotFoundException{
         String texto = "";
-        for(int i = 1; i <= pCantArchivos; i++){                                          //cambiar nombre prueba
-            InputStream ins = new FileInputStream("C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoTXT"+i+".txt");
+        for(int i = 0; i <= pCantArchivos.size(); i++){     
+            String nombre = pCantArchivos.get(i).toString();
+            InputStream ins = new FileInputStream("C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoTXT"+nombre+".txt");
             Scanner obj = new Scanner(ins);
             while (obj.hasNextLine())
             texto += obj.nextLine(); 
@@ -37,10 +39,11 @@ public class ConsultaBitacora {
 
 //------------------------------------IMPRIMIR XML---------------------------------------------------------
     
-    public static String imprimirArchivosXML(int pCantArchivos) throws FileNotFoundException{
+    public static String imprimirArchivosXML(ArrayList pCantArchivos) throws FileNotFoundException{
         String texto = "";
-        for(int i = 1; i <= pCantArchivos; i++){                                          //cambiar nombre prueba
-            InputStream ins = new FileInputStream("C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoXML"+i+".xml");
+        for(int i = 0; i <= pCantArchivos.size(); i++){     
+            String nombre = pCantArchivos.get(i).toString();                                         //cambiar nombre prueba
+            InputStream ins = new FileInputStream("C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoXML"+nombre+".xml");
             Scanner obj = new Scanner(ins);
             while (obj.hasNextLine())
             texto += obj.nextLine();
@@ -65,10 +68,11 @@ public class ConsultaBitacora {
     
 //------------------------------------IMPRIMIR CSV---------------------------------------------------------
   
-public static String imprimirArchivosCSV(int pCantArchivos) throws FileNotFoundException, IOException{
+public static String imprimirArchivosCSV(ArrayList pCantArchivos) throws FileNotFoundException, IOException{
     String texto = "";
-    for(int i = 1; i <= pCantArchivos; i++){
-        String file = "C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoCSV"+i+".csv";
+    for(int i = 0; i <= pCantArchivos.size(); i++){     
+        String nombre = pCantArchivos.get(i).toString();  
+        String file = "C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoCSV"+nombre+".csv";
         try {
             FileReader filereader = new FileReader(file);
             CSVReader csvReader = new CSVReader(filereader);

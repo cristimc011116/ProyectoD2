@@ -44,4 +44,46 @@ public class BitacoraDAO {
         con.desconectar();
         return contador;
     }
+    
+    public static ArrayList buscarNombreBitacora(String pVista) throws ClassNotFoundException {
+        ConexionBase con = new ConexionBase();
+        con.obtenerConexion();
+        ResultSet resultado;
+        ArrayList<String> cantidadTXT;   //la vdd no se si sirve 
+        cantidadTXT = new ArrayList();
+        try{
+            resultado = con.consultas("SELECT numero FROM Bitacora WHERE vista = '" + pVista +"' ");
+            while(resultado.next()){     //revisar si se guarda
+                cantidadTXT.add(resultado.toString());
+            }
+        }catch(SQLException ex){
+           JOptionPane.showMessageDialog(null, ex.toString());
+        }
+        con.desconectar();
+        return cantidadTXT;
+    
+    
+    }
+    
+        public static ArrayList buscarNombreFechaHoy() throws ClassNotFoundException {
+        ConexionBase con = new ConexionBase();
+        con.obtenerConexion();
+        ResultSet resultado;
+        ArrayList<String> cantidadTXT;   //la vdd no se si sirve 
+        cantidadTXT = new ArrayList();
+        LocalDate fecha= LocalDate.now();
+        try{
+            resultado = con.consultas("SELECT numero FROM Bitacora WHERE fecha = '" + fecha +"' ");
+            while(resultado.next()){     //revisar si se guarda
+                cantidadTXT.add(resultado.toString());
+            }
+        }catch(SQLException ex){
+           JOptionPane.showMessageDialog(null, ex.toString());
+        }
+        con.desconectar();
+        return cantidadTXT;
+    
+    
+    }
+    
 }
