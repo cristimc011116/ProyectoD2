@@ -191,17 +191,18 @@ public class Cuenta implements Comparable<Cuenta>{
         return exchangeRate;
     }
 
-    public static void setExchangeRate(Operacion pExchangeRate) {
+    public static void setExchangeRate(Operacion pExchangeRate, String pNumCuenta) throws ClassNotFoundException {
         System.out.println("ACAA2");
         exchangeRate = pExchangeRate;
-        Cuenta cuenta = new Cuenta("236050836", "activo", "12345");
-        RegistroXML registro = new RegistroXML(cuenta);
+        Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
+        RegistroXML registroxml = new RegistroXML(cuenta);
+        RegistroTramaPlana registrotp = new RegistroTramaPlana(cuenta);
+        RegistroCSV registrocsv = new RegistroCSV(cuenta);
         notifyAllObservers();
         System.out.println("ACAA3");
     }
     
     public static void notifyAllObservers(){
-        System.out.println(observers.size());
         for(int i=0; i<observers.size();i++){
             
             observers.get(i).update();

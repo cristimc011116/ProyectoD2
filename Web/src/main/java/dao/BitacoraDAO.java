@@ -19,12 +19,12 @@ import util.ConexionBase;
  */
 public class BitacoraDAO {
   private static ArrayList<Operacion> operaciones;
-    public static void insertarBitacora(String file, LocalDate fecha, String hora, String operacion, String vista, String numCuenta, int numero) throws ClassNotFoundException
+    public static void insertarBitacora(int pId, LocalDate pFecha, String pHora, String pNumCuenta, String pOperacion, String pVista) throws ClassNotFoundException
     {
         ConexionBase con = new ConexionBase();
         con.obtenerConexion();
-        con.excSentenciaSQL("INSERT INTO Bitacora VALUES(" + numero + ", '" + fecha + "', '" + hora +
-                "','" + file + "','" + numCuenta + "','" + operacion + "','" + vista +"')");
+        con.excSentenciaSQL("INSERT INTO Bitacora VALUES(" + pId + ", '" + pFecha + "', '" + pHora +
+                 "','" + pNumCuenta + "','" + pOperacion + "','" + pVista +"')");
         con.desconectar();
     }
     

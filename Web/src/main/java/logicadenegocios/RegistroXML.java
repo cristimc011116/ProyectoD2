@@ -4,6 +4,7 @@
  */
 package logicadenegocios;
 
+import dao.BitacoraDAO;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.logging.Level;
@@ -64,23 +65,24 @@ public class RegistroXML extends Bitacora{
       fecha.setTextContent(pOperacion.getFechaOperacion().toString());
       rootElement.appendChild(fecha);
 
-      /*Element hora = doc.createElement("Hora");
-      hora.setTextContent(pHora);
-      rootElement.appendChild(hora);*/
+      Element hora = doc.createElement("Hora");
+      hora.setTextContent(pOperacion.getHora());
+      rootElement.appendChild(hora);
 
       Element operacion = doc.createElement("Operacion");
       operacion.setTextContent(pOperacion.getTipo());
       rootElement.appendChild(operacion);
 
       Element tipoVista = doc.createElement("Vista");
-      tipoVista.setTextContent("GUI");
+      tipoVista.setTextContent(pOperacion.getVista());
       rootElement.appendChild(tipoVista);
 
       //Se escribe el contenido del XML en un archivo
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource source = new DOMSource(doc);
-      StreamResult result = new StreamResult(new File(file+"RegistroXML"+1+".xml"));
+      int idBitacora = BitacoraDAO.cantBitacorasBD()-1;
+      StreamResult result = new StreamResult(new File(file+"RegistroXML"+idBitacora+".xml"));
       transformer.transform(source, result);
     } catch (ParserConfigurationException pce) {
       pce.printStackTrace();

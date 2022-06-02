@@ -25,6 +25,8 @@ public class Operacion {
     private String tipo;
     private boolean comision;
     private double montoComision;
+    private String vista;
+    private String hora;
     private static ArrayList<Bitacora> bitacoras;
     Cuenta cuenta = new Cuenta();
 
@@ -36,6 +38,18 @@ public class Operacion {
         setTipo(pTipo);
         setComision(pComision);
         setMontoComision(pMontoComision);
+        
+    }
+    
+    public Operacion(int pId, LocalDate pFechaOperacion, String pTipo, boolean pComision, double pMontoComision, String pVista, String pHora)
+    {
+        setId(pId);
+        setFechaOperacion(pFechaOperacion);
+        setTipo(pTipo);
+        setComision(pComision);
+        setMontoComision(pMontoComision);
+        setVista(pVista);
+        setHora(pHora);
         
     }
 
@@ -60,21 +74,21 @@ public class Operacion {
     Cuenta.setExchangeRate(operacion);
   }*/
   
-  public static void crearBitacoras(Operacion operacion) throws ClassNotFoundException
+  public static void crearBitacoras(Operacion operacion, String pNumCuenta) throws ClassNotFoundException
   {
     //int id = BitacoraDAO.cantBitacorasBD();
     String direccionArchivo = "C:/Users/Josue/OneDrive/Documentos/TEC/V semestre 2022/Diseño de software/Elementos XML/";
     //update( direccionArchivo,  pFecha,  pHora,  pOperacion,  pVista,  pNumCuenta, id);
-    Cuenta.setExchangeRate(operacion);
+    Cuenta.setExchangeRate(operacion, pNumCuenta);
   }
   
-  public static void cambiarPIN(String pCuenta, String pPinNuevo) throws ClassNotFoundException
+  public static void cambiarPIN(String pCuenta, String pPinNuevo, String pVista) throws ClassNotFoundException
     {
       CuentaDAO.actualizarPin(pCuenta, pPinNuevo);
-      insertarOperacion("Cambiar Pin", false , 0.00, pCuenta);
+      insertarOperacion("Cambiar Pin", false , 0.00, pCuenta, pVista);
     }
     
-    public static void realizarDeposito(double monto, String moneda, String cuenta) throws ClassNotFoundException{
+    public static void realizarDeposito(double monto, String moneda, String cuenta, String pVista) throws ClassNotFoundException{
         double comision;
         double nuevoMonto;
         Cuenta cuentaBase = CuentaDAO.obtenerCuenta(cuenta);
@@ -87,10 +101,10 @@ public class Operacion {
         String strNuevoSaldo = Double.toString(nuevoSaldo);
         cuentaBase.setSaldo(strNuevoSaldo);
         CuentaDAO.actualizarSaldo(cuenta, strNuevoSaldo);
-        insertarOperacion("deposito", (comision>0.00) , comision, cuenta);
+        insertarOperacion("deposito", (comision>0.00) , comision, cuenta, pVista);
     }
     
-    public static void realizarRetiro(double monto, String moneda, String cuenta) throws ClassNotFoundException{
+    public static void realizarRetiro(double monto, String moneda, String cuenta, String pVista) throws ClassNotFoundException{
         double comision;
         double nuevoMonto;
         Cuenta cuentaBase = CuentaDAO.obtenerCuenta(cuenta);
@@ -103,10 +117,10 @@ public class Operacion {
         String strNuevoSaldo = Double.toString(nuevoSaldo);
         cuentaBase.setSaldo(strNuevoSaldo);
         CuentaDAO.actualizarSaldo(cuenta, strNuevoSaldo);
-        insertarOperacion("retiro", (comision>0.00) , comision, cuenta);
+        insertarOperacion("retiro", (comision>0.00) , comision, cuenta, pVista);
     }
     
-    public static void realizarTransferencia(String cuentaOrigen, String cuentaDestino, double monto) throws ClassNotFoundException{
+    public static void realizarTransferencia(String cuentaOrigen, String cuentaDestino, double monto, String pVista) throws ClassNotFoundException{
         //rebajar saldo    
         Cuenta cuentaBaseOrigen = CuentaDAO.obtenerCuenta(cuentaOrigen);
         Cuenta cuentaBaseDestino = CuentaDAO.obtenerCuenta(cuentaDestino);
@@ -120,7 +134,7 @@ public class Operacion {
         String strNuevoSaldo = Double.toString(nuevoSaldo);
         cuentaBaseOrigen.setSaldo(strNuevoSaldo);
         CuentaDAO.actualizarSaldo(cuentaOrigen, strNuevoSaldo);
-        insertarOperacion("transferencia", false , comision, cuentaOrigen);
+        insertarOperacion("transferencia", false , comision, cuentaOrigen, pVista);
 
         //hacer transferencia
 
@@ -223,17 +237,18 @@ public class Operacion {
         return resultado;
     }
     
-    public static void insertarOperacion(String pTipo, boolean pEsComision, double pMontoComision, String pNumCuenta) throws ClassNotFoundException
+    public static void insertarOperacion(String pTipo, boolean pEsComision, double pMontoComision, String pNumCuenta, String pVista) throws ClassNotFoundException
     {
       String direccionArchivo = "C:/Users/Josue/OneDrive/Documentos/TEC/V semestre 2022/Diseño de software/Elementos XML/";
       int id = OperacionDAO.cantOperacionesBD();
-      //int idBitacora = BitacoraDAO.cantBitacorasBD();
+      int idBitacora = BitacoraDAO.cantBitacorasBD();
       LocalDate fecha = Cuenta.setFechaCreacion();
-      Operacion operacion = new Operacion(id, fecha, pTipo, pEsComision, pMontoComision);
+      String hora = Bitacora.obtenerHora();
+      Operacion operacion = new Operacion(id, fecha, pTipo, pEsComision, pMontoComision, pVista, hora);
       OperacionDAO.insertarOperacion(operacion,fecha);
       OperacionDAO.asignarOperacionCuenta(operacion, pNumCuenta);
-      //BitacoraDAO.insertarBitacora( direccionArchivo, fecha,  "10:00",  pTipo,  "GUI",  pNumCuenta, idBitacora);
-      crearBitacoras(operacion);
+      BitacoraDAO.insertarBitacora(idBitacora, fecha, hora, pNumCuenta, pTipo, pVista);
+      crearBitacoras(operacion, pNumCuenta);
     }
     
     public static double consultarGananciaCuentaBanco(String numCuenta) throws ClassNotFoundException{
@@ -345,6 +360,24 @@ public class Operacion {
     public void setMontoComision(double montoComision) {
         this.montoComision = montoComision;
     }
+
+    public String getVista() {
+        return vista;
+    }
+
+    public void setVista(String vista) {
+        this.vista = vista;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+    
+    
 
 }
 

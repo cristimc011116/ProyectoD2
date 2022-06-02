@@ -462,7 +462,7 @@ public class ControladorUsuario implements ActionListener{
         {
           insertar += validarCuentaPinCambio(numCuenta,  pinActual, pinNuevo);
           if (insertar == 0){
-            operacion.cambiarPIN(numCuenta, pinNuevo);
+            operacion.cambiarPIN(numCuenta, pinNuevo, "GUI");
 
             this.vista6.txtNumeroCuenta.setText("");
             this.vista6.txtPinActual.setText("");
@@ -501,7 +501,7 @@ public class ControladorUsuario implements ActionListener{
           insertar += validarEntrCuenta(cuenta);
           if (insertar == 0)
           {
-            Operacion.realizarDeposito(monto, moneda, cuenta);  
+            Operacion.realizarDeposito(monto, moneda, cuenta, "GUI");  
             double montoCorrecto = montoValidoDeposito(monto, cuenta, moneda);
             double comision = ControladorUsuario.aplicaComisionRetiro(cuenta, montoCorrecto, 4);
             resultado = imprimirResultadoDeposito( moneda,comision,montoCorrecto,cuenta);
@@ -662,7 +662,7 @@ public class ControladorUsuario implements ActionListener{
           {
             
             double montoCorrecto = CLI.montoValido(monto, cuenta, moneda);
-            Operacion.realizarRetiro(monto, moneda, cuenta);
+            Operacion.realizarRetiro(monto, moneda, cuenta, "GUI");
             double comision = ControladorUsuario.aplicaComisionRetiro(cuenta, montoCorrecto, 4);
             resultado = imprimirResultado(moneda, comision, montoCorrecto);
             JOptionPane.showMessageDialog(null, resultado);
@@ -712,7 +712,7 @@ public class ControladorUsuario implements ActionListener{
           insertar += validarPalabraTransferencia(palabraClave, cuentaOrigen);
           if (insertar == 0)
           {                              
-            Operacion.realizarTransferencia(cuentaOrigen,cuentaDestino, monto);
+            Operacion.realizarTransferencia(cuentaOrigen,cuentaDestino, monto, "GUI");
             resultado = imprimirResultadoTransf(monto);
             JOptionPane.showMessageDialog(null, resultado);
             this.vista13.txtCuentaDestino.setText("");

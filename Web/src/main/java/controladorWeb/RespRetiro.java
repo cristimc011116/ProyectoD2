@@ -73,7 +73,7 @@ public class RespRetiro extends HttpServlet {
               {
                 double montoD = Double.parseDouble(monto);
                 double montoCorrecto = montoValido(montoD, numero, moneda);
-                Operacion.realizarRetiro(montoD, moneda, numero);
+                Operacion.realizarRetiro(montoD, moneda, numero, "WEB");
                 double comision = ControladorUsuario.aplicaComisionRetiro(numero, montoCorrecto, 4);
                 String resultado = ControladorUsuario.imprimirResultado(moneda, comision, montoCorrecto);
                 try ( PrintWriter out = response.getWriter()) {

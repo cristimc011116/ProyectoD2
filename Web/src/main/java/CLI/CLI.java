@@ -93,7 +93,7 @@ public class CLI {
           else
           {
             String pinNuevo = pedirPinNuevo();  
-            Operacion.cambiarPIN(numCuenta, pinNuevo);
+            Operacion.cambiarPIN(numCuenta, pinNuevo, "CLI");
             System.out.println("Estimado usuario, se ha cambiado satisfactoriamente el PIN de su cuenta: "+numCuenta);
             volverMenu();
           }
@@ -126,7 +126,7 @@ public class CLI {
         double monto = Double.parseDouble(strMonto);
         double montoCorrecto = montoValidoDeposito(monto, pNumCuenta, moneda);
         double comision = ControladorUsuario.aplicaComision(pNumCuenta, montoCorrecto);
-        Operacion.realizarDeposito(monto, moneda, pNumCuenta);
+        Operacion.realizarDeposito(monto, moneda, pNumCuenta, "CLI");
         resultado = ControladorUsuario.imprimirResultadoDeposito(moneda, comision, montoCorrecto,pNumCuenta);
         System.out.println(resultado);
         volverMenu();
@@ -296,7 +296,7 @@ public class CLI {
                     String strMonto = pedirMonto();
                     double monto = Double.parseDouble(strMonto);
                     double montoCorrecto = montoValido(monto, pNumCuenta, moneda);
-                    Operacion.realizarRetiro(monto, moneda, pNumCuenta);
+                    Operacion.realizarRetiro(monto, moneda, pNumCuenta, "CLI");
                     double comision = ControladorUsuario.aplicaComisionRetiro(pNumCuenta, montoCorrecto, 4);
                     resultado = ControladorUsuario.imprimirResultado(moneda, comision, montoCorrecto);
                     System.out.println(resultado);
@@ -357,7 +357,7 @@ public class CLI {
                     String pNumCuentaDestino = pedirNumCuenta();
                     Cuenta cuentadestino = CuentaDAO.obtenerCuenta(pNumCuentaDestino);
                     
-                    Operacion.realizarTransferencia(pNumCuenta, pNumCuentaDestino, monto);
+                    Operacion.realizarTransferencia(pNumCuenta, pNumCuentaDestino, monto, "CLI");
                     resultado = ControladorUsuario.imprimirResultadoTransf(montoCorrecto);
                     System.out.println(resultado);
                     volverMenu();

@@ -4,36 +4,51 @@
  */
 package logicadenegocios;
 
+import dao.BitacoraDAO;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Josue
  */
-public class RegistroTramaPlana{
-  
-  public void RegistroTramaPlana(Operacion pOperacion)
+public class RegistroTramaPlana extends Bitacora{
+  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosTP\\");
+  public RegistroTramaPlana(Cuenta pSubject)
   {
-    //bitacora = pOperacion;
-    //bitacora.agregarBitacora(this);
+    subject = pSubject;
+    subject.attach(this);
   }
   
-    public void update(String file, LocalDate pFecha, String pHora, String pOperacion, String pVista, String pNumCuenta,int numero)
+  @Override
+  public void update(){
+      try{
+          System.out.println("ACAA7");
+          Operacion operacion = subject.getExchangeRate();
+          añadirBitacoraTP(operacion, subject.getNumero());
+      }catch(Exception ex){
+          Logger.getLogger(RegistroXML.class.getName()).log(Level.SEVERE, null, ex);
+      }
+  }
+  
+    public void añadirBitacoraTP(Operacion pOperacion, String pNumCuenta)
   {
     String registro = "";
     
     registro = AgregarNumCuenta(registro, pNumCuenta);
-    registro = AgregarFecha( registro, pFecha.toString());
-    registro = AgregarHora( registro, pHora);
-    registro = AgregarOperacion( registro, pOperacion);
-    registro = AgregarVista( registro, pVista);
+    registro = AgregarFecha( registro, pOperacion.getFechaOperacion().toString());
+    registro = AgregarHora( registro, pOperacion.getHora());
+    registro = AgregarOperacion( registro, pOperacion.getTipo());
+    registro = AgregarVista( registro, pOperacion.getVista());
     
     try {
       String contenido = registro;
-      File file1 = new File(file+"RegistroTramaPlana"+numero+".txt");
+      int idBitacora = BitacoraDAO.cantBitacorasBD()-1;
+      File file1 = new File(file+"RegistroTramaPlana"+idBitacora+".txt");
       // Si el archivo no existe es creado
       if (!file1.exists()) {
           file1.createNewFile();

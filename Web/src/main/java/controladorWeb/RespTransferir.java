@@ -73,7 +73,7 @@ public class RespTransferir extends HttpServlet {
               {
                 double montoD = Double.parseDouble(monto);
                 double montoCorrecto = montoValido(montoD, numero, "colones");
-                Operacion.realizarTransferencia(numero, numeroDestino, montoD);
+                Operacion.realizarTransferencia(numero, numeroDestino, montoD, "WEB");
                 String resultado = ControladorUsuario.imprimirResultadoTransf(montoCorrecto);
                 try ( PrintWriter out = response.getWriter()) {
                     /* TODO output your page here. You may use following sample code. */

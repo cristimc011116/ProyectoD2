@@ -58,7 +58,7 @@ public class RespCambioPin extends HttpServlet {
             {
               insertar += validarCuentaPinCambio(numero,  pinA, pinN);
               if (insertar == 0){
-                Operacion.cambiarPIN(numero, pinN);
+                Operacion.cambiarPIN(numero, pinN, "WEB");
                 try ( PrintWriter out = response.getWriter()) {
                     /* TODO output your page here. You may use following sample code. */
                     out.println("<!DOCTYPE html>");
