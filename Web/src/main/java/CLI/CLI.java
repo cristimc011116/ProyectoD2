@@ -731,14 +731,13 @@ public class CLI {
     
     public static double montoValido(double pMonto, String pNumCuenta, String moneda) throws ClassNotFoundException
     {
-        
-        ConsultaMoneda consulta = new ConsultaMoneda();
+        ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
         String montoEncrip = cuenta.getSaldo();
         //String strMonto = Cuenta.desencriptar(montoEncrip);
         //String strMonto1 = strMonto.replace("+-","");
         double monto = Double.parseDouble(montoEncrip);
-        double venta = consulta.consultaCambioVenta();
+        double venta = consultaMoneda.consultaCambioVenta();
         double pMontoDolares = pMonto * venta;
         if("dolares".equals(moneda))
         {
@@ -766,13 +765,13 @@ public class CLI {
     
     public static double montoValidoDeposito(double pMonto, String pNumCuenta, String moneda) throws ClassNotFoundException
     {
-        ConsultaMoneda consulta = new ConsultaMoneda();
+        ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
         String montoEncrip = cuenta.getSaldo();
         //String strMonto = Cuenta.desencriptar(montoEncrip);
         //String strMonto1 = strMonto.replace("+-","");
         double monto = Double.parseDouble(montoEncrip);
-        double venta = consulta.consultaCambioVenta();
+        double venta = consultaMoneda.consultaCambioVenta();
         double pMontoDolares = pMonto * venta;
         if("dolares".equals(moneda))
         {

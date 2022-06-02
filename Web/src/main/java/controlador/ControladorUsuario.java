@@ -53,6 +53,7 @@ import util.Mensaje;
 //import util.Mensaje;
 import validacion.ExpresionesRegulares;
 import webService.ConsultaMoneda;
+import webService.ConsultaMonedaSingleton;
 
 /**
  *
@@ -893,7 +894,7 @@ public class ControladorUsuario implements ActionListener{
     }
     
     public void consultarEstadoCuentaP2(String cuenta, String moneda) throws ClassNotFoundException{
-      ConsultaMoneda consulta = new ConsultaMoneda();
+      ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
       this.vista5 = new ConsultarEstadoCuentaP2();
       //String cuenta = this.vista4.txtCuenta.getText();
       Cuenta cuentaBase = CuentaDAO.obtenerCuenta(cuenta);
@@ -928,7 +929,7 @@ public class ControladorUsuario implements ActionListener{
         }
         else
         {
-          double venta = consulta.consultaCambioVenta();
+          double venta = consultaMoneda.consultaCambioVenta();
           double comisionDolares = (operacion.getMontoComision()/venta);
           Object[] info = {operacion.getFechaOperacion(), operacion.getTipo(), comisionDolares};
           this.vista5.modelo.addRow(info);
@@ -1247,13 +1248,13 @@ public class ControladorUsuario implements ActionListener{
     
     public static boolean montoValido(double pMonto, String pNumCuenta, String moneda) throws ClassNotFoundException
     {
-      ConsultaMoneda consulta = new ConsultaMoneda();
+      ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
       String montoEncrip = cuenta.getSaldo();
       //String strMonto = Cuenta.desencriptar(montoEncrip);
       //String strMonto1 = strMonto.replace("+-","");
       double monto = Double.parseDouble(montoEncrip);
-      double venta = consulta.consultaCambioVenta();
+      double venta = consultaMoneda.consultaCambioVenta();
       double pMontoDolares = pMonto * venta;
       if("dolares".equals(moneda))
       {
@@ -1276,8 +1277,8 @@ public class ControladorUsuario implements ActionListener{
     
     public static double montoCorrecto(double pMonto, String moneda)
     {
-      ConsultaMoneda consulta = new ConsultaMoneda();
-      double venta = consulta.consultaCambioVenta();
+      ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
+      double venta = consultaMoneda.consultaCambioVenta();
       double monto = pMonto;
       if("dolares".equals(moneda))
       {
@@ -1288,8 +1289,8 @@ public class ControladorUsuario implements ActionListener{
     
     public static double montoMoneda(double pMonto, String moneda)
     {
-      ConsultaMoneda consulta = new ConsultaMoneda();
-      double venta = consulta.consultaCambioVenta();
+      ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
+      double venta = consultaMoneda.consultaCambioVenta();
       double monto = pMonto;
       if("dolares".equals(moneda))
       {
@@ -1627,8 +1628,8 @@ public class ControladorUsuario implements ActionListener{
       }
       else
       {
-        ConsultaMoneda consulta = new ConsultaMoneda();
-        double ventaDolar = consulta.consultaCambioVenta();
+        ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
+        double ventaDolar = consultaMoneda.consultaCambioVenta();
         double montoDolares = monto/ventaDolar;
         resultado += "Estimado usuario, el monto de este retiro es: " + (df.format(montoDolares)) + " dólares";
         resultado += "\n\n[Según el BCCR, el tipo de cambio de venta del dólar hoy es: " + (df.format(ventaDolar)) +"]";
@@ -1665,8 +1666,8 @@ public class ControladorUsuario implements ActionListener{
       }
       else
       {
-        ConsultaMoneda consulta = new ConsultaMoneda();
-        double ventaDolar = consulta.consultaCambioVenta();
+        ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
+        double ventaDolar = consultaMoneda.consultaCambioVenta();
         double montoDolares = monto/ventaDolar;
         depositoReal=monto-comision;
         //operacion.depositar(cuenta,String.valueOf(depositoReal));
@@ -1693,8 +1694,8 @@ public class ControladorUsuario implements ActionListener{
       }
       else
       {
-        ConsultaMoneda consulta = new ConsultaMoneda();
-        double ventaDolar = consulta.consultaCambioVenta();
+        ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
+        double ventaDolar = consultaMoneda.consultaCambioVenta();
         double montoDolares = saldoFinal/ventaDolar;
         resultado += "Estimado usuario el saldo actual de su cuenta es: " + (df.format(montoDolares))+" dólares";
         resultado += "\n\nPara esta conversión se utilizó el tipo de cambio del dólar, precio de compra.";

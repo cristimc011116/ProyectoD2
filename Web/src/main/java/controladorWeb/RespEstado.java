@@ -30,6 +30,7 @@ import logicadenegocios.Operacion;
 import logicadenegocios.Persona;
 import util.Encriptacion;
 import webService.ConsultaMoneda;
+import webService.ConsultaMonedaSingleton;
 
 /**
  *
@@ -67,7 +68,7 @@ public class RespEstado extends HttpServlet {
                 insertar += validarCuentaPin2(numero, pin);
                 if(insertar==0){
                     Cuenta cuenta = CuentaDAO.obtenerCuenta(numero);
-                    ConsultaMoneda consulta = new ConsultaMoneda();
+                    ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
                     int idDueno = CuentaDAO.obtenerPersonaCuenta(numero);
                     String strIdDueno = Integer.toString(idDueno);
                     String strSaldoColones = cuenta.getSaldo();
@@ -111,7 +112,7 @@ public class RespEstado extends HttpServlet {
                           }
                           else
                           {
-                            double venta = consulta.consultaCambioVenta();
+                            double venta = consultaMoneda.consultaCambioVenta();
                             double comisionDolares = (operacion.getMontoComision()/venta);
                             out.println("<tr>");
                             out.println("<td>"+ operacion.getFechaOperacion() +"</td>");

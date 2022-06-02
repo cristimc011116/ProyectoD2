@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import util.Encriptacion;
 import util.Mensaje;
 import webService.ConsultaMoneda;
+import webService.ConsultaMonedaSingleton;
 /**
  *
  * @author Cristi Martínez
@@ -148,12 +149,12 @@ public class Operacion {
     
     public static Double consultarCambioDolar(String opcion){
       Double resultado= 0.0;
-      ConsultaMoneda consulta = new ConsultaMoneda();
+      ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
       if (opcion == "compra"){
-          resultado = consulta.consultaCambioCompra();
+          resultado = consultaMoneda.consultaCambioCompra();
       }
       else if (opcion == "venta"){
-          resultado = consulta.consultaCambioVenta();
+          resultado = consultaMoneda.consultaCambioVenta();
       }
     return resultado;
     }
@@ -177,8 +178,8 @@ public class Operacion {
     
     public static double consultarSaldoDolares(String pNumCenta) throws ClassNotFoundException
     {
-      ConsultaMoneda consulta = new ConsultaMoneda();
-      double cambio = consulta.consultaCambioVenta();
+      ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
+      double cambio = consultaMoneda.consultaCambioVenta();
       Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCenta);
       String strSaldo = cuenta.getSaldo();
       double saldo = Double.parseDouble(strSaldo);
@@ -194,7 +195,7 @@ public class Operacion {
     }
     
     public static String consultarEstadoCuenta(String pNumCuenta, String moneda) throws ClassNotFoundException{
-        ConsultaMoneda consulta = new ConsultaMoneda();
+        ConsultaMoneda consultaMoneda = ConsultaMonedaSingleton.getInstance();
         String strSaldo = "";
         String strPin = "";
         String resultado = "";
@@ -222,7 +223,7 @@ public class Operacion {
             }
             else
             {
-                double venta = consulta.consultaCambioVenta();
+                double venta = consultaMoneda.consultaCambioVenta();
                 strPin = cuentaBase.getPin();
                 double comisionDolares = (operacion.getMontoComision()/venta);
                 LocalDate fecha = operacion.getFechaOperacion();
