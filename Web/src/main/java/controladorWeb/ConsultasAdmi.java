@@ -51,45 +51,102 @@ public class ConsultasAdmi extends HttpServlet {
             out.println("<br>");
             out.println("<br>");
             
-            out.println("<form action=\"respEstatus\" method=\"post\">");
+            out.println("<form action=\"ConsultaRegistrosHoy\" method=\"post\">");
             out.println("<table border=\"1\" align=\"center\">");
             out.println("<tr>");
-            out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Registros de hoy\"/></td>");
+            out.println("<td colspan=\"4\" align=\"center\"><input type=\"submit\" value=\"Registros de hoy\"/></td>");
             out.println("</tr>");
+            
+            out.println("<tr>");
+            out.println("<td align=\"center\">Marque en que formato quiere ver la consulta</td>");
+            out.println("<br>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"Trama plana\" name=\"formato\" value=\"Trama plana\"><label for=\"Trama plana\">Trama plana</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"CSV\" name=\"formato\" value=\"CSV\"><label for=\"CSV\">CSV</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"XML\" name=\"formato\" value=\"XML\"><label for=\"XML\">XML</label></td>");
+            out.println("</tr>");
+            
             out.println("</table>");
             out.println("</form>");
             
-            out.println("<form action=\"respEstatus\" method=\"post\">");
+            out.println("<form action=\"ConsultaRegistrosCLI\" method=\"post\">");
             out.println("<table border=\"1\" align=\"center\">");
             out.println("<tr>");
-            out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Registros CLI\"/></td>");
+            out.println("<td colspan=\"4\" align=\"center\"><input type=\"submit\" value=\"Registros CLI\"/></td>");
             out.println("</tr>");
+            
+            out.println("<tr>");
+            out.println("<td align=\"center\">Marque en que formato quiere ver la consulta</td>");
+            out.println("<br>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"Trama plana\" name=\"formato\" value=\"Trama plana\"><label for=\"Trama plana\">Trama plana</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"CSV\" name=\"formato\" value=\"CSV\"><label for=\"CSV\">CSV</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"XML\" name=\"formato\" value=\"XML\"><label for=\"XML\">XML</label></td>");
+            out.println("</tr>");
+            
             out.println("</table>");
             out.println("</form>");
             
-            out.println("<form action=\"respEstatus\" method=\"post\">");
+            out.println("<form action=\"ConsultaRegistrosGUI\" method=\"post\">");
             out.println("<table border=\"1\" align=\"center\">");
             out.println("<tr>");
-            out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Registros GUI\"/></td>");
+            out.println("<td colspan=\"4\" align=\"center\"><input type=\"submit\" value=\"Registros GUI\"/></td>");
             out.println("</tr>");
+            
+            out.println("<tr>");
+            out.println("<td align=\"center\">Marque en que formato quiere ver la consulta</td>");
+            out.println("<br>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"Trama plana\" name=\"formato\" value=\"Trama plana\"><label for=\"Trama plana\">Trama plana</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"CSV\" name=\"formato\" value=\"CSV\"><label for=\"CSV\">CSV</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"XML\" name=\"formato\" value=\"XML\"><label for=\"XML\">XML</label></td>");
+            out.println("</tr>");
+            
             out.println("</table>");
             out.println("</form>");
             
-            out.println("<form action=\"respEstatus\" method=\"post\">");
+            out.println("<form action=\"ConsultaRegistrosWEB\" method=\"post\">");
             out.println("<table border=\"1\" align=\"center\">");
             out.println("<tr>");
-            out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Registros Web\"/></td>");
+            out.println("<td colspan=\"4\" align=\"center\"><input type=\"submit\" value=\"Registros Web\"/></td>");
             out.println("</tr>");
+            
+            out.println("<tr>");
+            out.println("<td align=\"center\">Marque en que formato quiere ver la consulta</td>");
+            out.println("<br>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"Trama plana\" name=\"formato\" value=\"Trama plana\"><label for=\"Trama plana\">Trama plana</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"CSV\" name=\"formato\" value=\"CSV\"><label for=\"CSV\">CSV</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"XML\" name=\"formato\" value=\"XML\"><label for=\"XML\">XML</label></td>");
+            out.println("</tr>");
+            
             out.println("</table>");
             out.println("</form>");
             
-            out.println("<form action=\"respEstatus\" method=\"post\">");
+            out.println("<form action=\"ConsultaRegistrosTODO\" method=\"post\">");
             out.println("<table border=\"1\" align=\"center\">");
             out.println("<tr>");
-            out.println("<td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Todos los registros\"/></td>");
+            out.println("<td colspan=\"4\" align=\"center\"><input type=\"submit\" value=\"Todos los registros\"/></td>");
             out.println("</tr>");
+            
+            out.println("<tr>");
+            out.println("<td align=\"center\">Marque en que formato quiere ver la consulta</td>");
+            out.println("<br>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"Trama plana\" name=\"formato\" value=\"Trama plana\"><label for=\"Trama plana\">Trama plana</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"CSV\" name=\"formato\" value=\"CSV\"><label for=\"CSV\">CSV</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"XML\" name=\"formato\" value=\"XML\"><label for=\"XML\">XML</label></td>");
+            out.println("</tr>");
+            
             out.println("</table>");
             out.println("</form>");
+            
+            /*out.println("<table border=\"1\" align=\"center\">");
+            out.println("<tr>");
+            out.println("<td align=\"center\">Marque en que formato quiere ver la consulta</td>");
+            out.println("<br>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"Trama plana\" name=\"formato\" value=\"Trama plana\"><label for=\"Trama plana\">Trama plana</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"CSV\" name=\"formato\" value=\"CSV\"><label for=\"CSV\">CSV</label></td>");
+            out.println("<td align=\"center\"><input type=\"radio\" id=\"XML\" name=\"formato\" value=\"XML\"><label for=\"XML\">XML</label></td>");
+            out.println("</tr>");
+            out.println("</table>");*/
+            
+          
             
             out.println("</body>");
             out.println("</html>");

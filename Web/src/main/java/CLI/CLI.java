@@ -731,6 +731,7 @@ public class CLI {
     
     public static double montoValido(double pMonto, String pNumCuenta, String moneda) throws ClassNotFoundException
     {
+        
         ConsultaMoneda consulta = new ConsultaMoneda();
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
         String montoEncrip = cuenta.getSaldo();

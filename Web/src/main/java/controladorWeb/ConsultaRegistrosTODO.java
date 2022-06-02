@@ -16,13 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 import static util.ConsultaBitacora.*;
 
 /**
  *
  * @author Cristi Martínez
  */
-@WebServlet(name = "ConsultasAdmi", urlPatterns = {"/ConsultasAdmi"})
+@WebServlet(name = "ConsultaRegistrosTODO", urlPatterns = {"/ConsultaRegistrosTODO"})
 public class ConsultaRegistrosTODO extends HttpServlet {
 
     /**
@@ -44,36 +45,23 @@ public class ConsultaRegistrosTODO extends HttpServlet {
         nombre = buscarNombreBitacora("CLI");
         nombre2 = buscarNombreBitacora("GUI");
         nombre3 = buscarNombreBitacora("WEB");
-                
-        String BitacorasCLI = imprimirArchivosTXT(nombre) + imprimirArchivosXML(nombre) + imprimirArchivosCSV(nombre);
-        String BitacorasGUI = imprimirArchivosTXT(nombre2) + imprimirArchivosXML(nombre2) + imprimirArchivosCSV(nombre2);
-        String BitacorasWEB = imprimirArchivosTXT(nombre3) + imprimirArchivosXML(nombre3) + imprimirArchivosCSV(nombre3);
         
-           try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Consultas de todas las operaciones realizadas</title>");            
-            out.println("</head>");
-            out.println("<body>");
+        String formato = request.getParameter("formato");
+        String BitacorasXML = imprimirArchivosXML(nombre) + imprimirArchivosXML(nombre2) + imprimirArchivosXML(nombre3);
+        String BitacorasCSV = imprimirArchivosCSV(nombre) + imprimirArchivosCSV(nombre2) + imprimirArchivosCSV(nombre3);
+        String BitacorasTP = imprimirArchivosTXT(nombre) + imprimirArchivosTXT(nombre2) + imprimirArchivosTXT(nombre3);
+       
             
             //imprimir texto
-            
-            out.println("<tr>");
-            out.println("<td>"+BitacorasCLI+"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<td>"+BitacorasGUI+"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<td>"+BitacorasWEB+"</td>");
-            out.println("</tr>");
-            
-
-            out.println("</body>");
-            out.println("</html>");
-            } 
+            if("Trama plana".equals(formato)){
+                JOptionPane.showMessageDialog(null, BitacorasTP);
+            }
+            if("CSV".equals(formato)){
+                JOptionPane.showMessageDialog(null, BitacorasCSV);
+            }
+            if("XML".equals(formato)){
+                JOptionPane.showMessageDialog(null, BitacorasXML);
+            }
         
     }
 

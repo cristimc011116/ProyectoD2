@@ -45,37 +45,38 @@ public class BitacoraDAO {
         return contador;
     }
     
-    public static ArrayList buscarNombreBitacora(String pVista) throws ClassNotFoundException {
+    public static ArrayList<String> buscarNombreBitacora(String pVista) throws ClassNotFoundException {
         ConexionBase con = new ConexionBase();
         con.obtenerConexion();
         ResultSet resultado;
-        ArrayList<String> cantidadTXT;   //la vdd no se si sirve 
-        cantidadTXT = new ArrayList();
+        ArrayList<String> cantidadTXT = new ArrayList<>();
         try{
-            resultado = con.consultas("SELECT numero FROM Bitacora WHERE vista = '" + pVista +"' ");
-            while(resultado.next()){     //revisar si se guarda
-                cantidadTXT.add(resultado.toString());
+            resultado = con.consultas("SELECT * FROM Bitacora WHERE vista = '" + pVista +"' ");
+            while(resultado.next()){ 
+                String numero = resultado.getString("numero");
+                cantidadTXT.add(numero);
             }
         }catch(SQLException ex){
            JOptionPane.showMessageDialog(null, ex.toString());
         }
+        System.out.println(cantidadTXT);
         con.desconectar();
         return cantidadTXT;
     
     
     }
     
-        public static ArrayList buscarNombreFechaHoy() throws ClassNotFoundException {
+        public static ArrayList<String> buscarNombreFechaHoy() throws ClassNotFoundException {
         ConexionBase con = new ConexionBase();
         con.obtenerConexion();
         ResultSet resultado;
-        ArrayList<String> cantidadTXT;   //la vdd no se si sirve 
-        cantidadTXT = new ArrayList();
+        ArrayList<String> cantidadTXT = new ArrayList<>();
         LocalDate fecha= LocalDate.now();
         try{
-            resultado = con.consultas("SELECT numero FROM Bitacora WHERE fecha = '" + fecha +"' ");
+            resultado = con.consultas("SELECT * FROM Bitacora WHERE fecha = '" + fecha +"' ");
             while(resultado.next()){     //revisar si se guarda
-                cantidadTXT.add(resultado.toString());
+                String numero = resultado.getString("numero");
+                cantidadTXT.add(numero);
             }
         }catch(SQLException ex){
            JOptionPane.showMessageDialog(null, ex.toString());

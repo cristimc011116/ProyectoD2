@@ -26,9 +26,9 @@ public class ConsultaBitacora {
 //------------------------------------IMPRIMIR TXT---------------------------------------------------------   
     public static String imprimirArchivosTXT(ArrayList pCantArchivos) throws FileNotFoundException{
         String texto = "";
-        for(int i = 0; i <= pCantArchivos.size(); i++){     
+        for(int i = 0; i < pCantArchivos.size(); i++){     
             String nombre = pCantArchivos.get(i).toString();
-            InputStream ins = new FileInputStream("C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoTXT"+nombre+".txt");
+            InputStream ins = new FileInputStream("C:\\Users\\Cristi Martínez\\Documents\\ArchivosTP\\RegistroTramaPlana"+nombre+".txt");
             Scanner obj = new Scanner(ins);
             while (obj.hasNextLine())
             texto += obj.nextLine(); 
@@ -41,9 +41,9 @@ public class ConsultaBitacora {
     
     public static String imprimirArchivosXML(ArrayList pCantArchivos) throws FileNotFoundException{
         String texto = "";
-        for(int i = 0; i <= pCantArchivos.size(); i++){     
+        for(int i = 0; i < pCantArchivos.size(); i++){     
             String nombre = pCantArchivos.get(i).toString();                                         //cambiar nombre prueba
-            InputStream ins = new FileInputStream("C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoXML"+nombre+".xml");
+            InputStream ins = new FileInputStream("C:\\Users\\Cristi Martínez\\Documents\\ArchivosXML\\RegistroXML"+nombre+".xml");
             Scanner obj = new Scanner(ins);
             while (obj.hasNextLine())
             texto += obj.nextLine();
@@ -70,9 +70,9 @@ public class ConsultaBitacora {
   
 public static String imprimirArchivosCSV(ArrayList pCantArchivos) throws FileNotFoundException, IOException{
     String texto = "";
-    for(int i = 0; i <= pCantArchivos.size(); i++){     
+    for(int i = 0; i < pCantArchivos.size(); i++){     
         String nombre = pCantArchivos.get(i).toString();  
-        String file = "C:\\Users\\User\\OneDrive - Estudiantes ITCR\\Escritorio\\ArchivoCSV"+nombre+".csv";
+        String file = "C:\\Users\\Cristi Martínez\\Documents\\ArchivosCSV\\RegistroCSV"+nombre+".csv";
         try {
             FileReader filereader = new FileReader(file);
             CSVReader csvReader = new CSVReader(filereader);
@@ -80,10 +80,10 @@ public static String imprimirArchivosCSV(ArrayList pCantArchivos) throws FileNot
             while ((nextRecord = csvReader.readNext()) != null) {
                 for (String cell : nextRecord) {
                     texto += (cell + "\t");
-                    texto += "\n";
+                    texto += ",";
                 }
             }
-            texto += "\n";
+            texto += "\n\n";
             
         }
         catch (Exception e) {

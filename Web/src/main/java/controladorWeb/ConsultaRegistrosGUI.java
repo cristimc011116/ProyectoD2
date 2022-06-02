@@ -16,13 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 import static util.ConsultaBitacora.*;
 
 /**
  *
  * @author Cristi Martínez
  */
-@WebServlet(name = "ConsultasAdmi", urlPatterns = {"/ConsultasAdmi"})
+@WebServlet(name = "ConsultaRegistrosGUI", urlPatterns = {"/ConsultaRegistrosGUI"})
 public class ConsultaRegistrosGUI extends HttpServlet {
 
     /**
@@ -40,28 +41,25 @@ public class ConsultaRegistrosGUI extends HttpServlet {
         
         ArrayList<String> nombre;
         nombre = buscarNombreBitacora("GUI");
-        String Bitacoras = imprimirArchivosTXT(nombre) + imprimirArchivosXML(nombre) + imprimirArchivosCSV(nombre);
+        
+        String formato = request.getParameter("formato");
+        String BitacorasXML = imprimirArchivosXML(nombre);
+        String BitacorasCSV = imprimirArchivosCSV(nombre);
+        String BitacorasTP = imprimirArchivosTXT(nombre);
        
-           try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Consultas de las operaciones realizadas en GUI</title>");            
-            out.println("</head>");
-            out.println("<body>");
             
             //imprimir texto
+            if("Trama plana".equals(formato)){
+                JOptionPane.showMessageDialog(null, BitacorasTP);
+            }
+            if("CSV".equals(formato)){
+                JOptionPane.showMessageDialog(null, BitacorasCSV);
+            }
+            if("XML".equals(formato)){
+                JOptionPane.showMessageDialog(null, BitacorasXML);
+            }
             
-            out.println("<tr>");
-            out.println("<td>"+Bitacoras+"</td>");
-            out.println("</tr>");
             
-
-            out.println("</body>");
-            out.println("</html>");
-            } 
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

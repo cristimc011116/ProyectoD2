@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author Josue
  */
 public class RegistroTramaPlana extends Bitacora{
-  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosTP\\");
+  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosTP\\Registro\\");
   public RegistroTramaPlana(Cuenta pSubject)
   {
     subject = pSubject;
@@ -27,7 +27,6 @@ public class RegistroTramaPlana extends Bitacora{
   @Override
   public void update(){
       try{
-          System.out.println("ACAA7");
           Operacion operacion = subject.getExchangeRate();
           añadirBitacoraTP(operacion, subject.getNumero());
       }catch(Exception ex){
@@ -48,7 +47,7 @@ public class RegistroTramaPlana extends Bitacora{
     try {
       String contenido = registro;
       int idBitacora = BitacoraDAO.cantBitacorasBD()-1;
-      File file1 = new File(file+"RegistroTramaPlana"+idBitacora+".txt");
+      File file1 = new File(file+"TramaPlana"+idBitacora+".txt");
       // Si el archivo no existe es creado
       if (!file1.exists()) {
           file1.createNewFile();

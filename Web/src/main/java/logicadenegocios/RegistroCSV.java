@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author Josue
  */
 public class RegistroCSV extends Bitacora{
-  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosCSV\\");
+  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosCSV\\Registro\\");
   public RegistroCSV(Cuenta pSubject)
   {
     subject = pSubject;
@@ -27,7 +27,6 @@ public class RegistroCSV extends Bitacora{
   @Override
   public void update(){
       try{
-          System.out.println("ACAA1");
           Operacion operacion = subject.getExchangeRate();
           añadirBitacoraCSV(operacion, subject.getNumero());
       }catch(Exception ex){
@@ -40,7 +39,7 @@ public class RegistroCSV extends Bitacora{
     String delim = ",";
 		try {
                         int idBitacora = BitacoraDAO.cantBitacorasBD()-1;
-			FileWriter fw = new FileWriter(file+"bitacorasCSV"+idBitacora+".csv");
+			FileWriter fw = new FileWriter(file+"CSV"+idBitacora+".csv");
       
 			fw.append(pNumCuenta);
 			fw.append(delim);

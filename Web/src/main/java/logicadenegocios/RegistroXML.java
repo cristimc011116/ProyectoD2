@@ -26,17 +26,15 @@ import org.w3c.dom.Element;
  * @author Josue
  */
 public class RegistroXML extends Bitacora{
-  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosXML\\");
+  static File file = new File("C:\\Users\\Cristi Martínez\\Documents\\ArchivosXML\\Registro\\");
   public RegistroXML(Cuenta pSubject){
       subject = pSubject;
       subject.attach(this);
-      System.out.println("ACAA5");
   }
   
   @Override
   public void update(){
       try{
-          System.out.println("ACAA1");
           Operacion operacion = subject.getExchangeRate();
           añadirBitacoraXML1(operacion, subject.getNumero());
       }catch(Exception ex){
@@ -46,7 +44,6 @@ public class RegistroXML extends Bitacora{
   
   public void añadirBitacoraXML1(Operacion pOperacion, String pNumCuenta) throws Exception{
      try {
-         System.out.println("ACAA");
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
       //Elemento raíz
@@ -82,7 +79,7 @@ public class RegistroXML extends Bitacora{
       Transformer transformer = transformerFactory.newTransformer();
       DOMSource source = new DOMSource(doc);
       int idBitacora = BitacoraDAO.cantBitacorasBD()-1;
-      StreamResult result = new StreamResult(new File(file+"RegistroXML"+idBitacora+".xml"));
+      StreamResult result = new StreamResult(new File(file+"XML"+idBitacora+".xml"));
       transformer.transform(source, result);
     } catch (ParserConfigurationException pce) {
       pce.printStackTrace();
