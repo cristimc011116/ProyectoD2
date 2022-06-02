@@ -4,8 +4,10 @@
  */
 package logicadenegocios;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -36,12 +38,8 @@ public abstract class Bitacora{
     }*/
     
     public static String obtenerHora(){
-        long millis = System.currentTimeMillis();
-        int hours   = (int) ((millis / (1000*60*60)) % 24);
-        int minutes = (int) ((millis / (1000*60)) % 60);
-        int seconds = (int) (millis / 1000) % 60 ;
-        String hora =  hours + ":"+ minutes+":"+seconds;
-        return hora;
+        String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+        return timeStamp;
     }
 
     public Cuenta getSubject() {
