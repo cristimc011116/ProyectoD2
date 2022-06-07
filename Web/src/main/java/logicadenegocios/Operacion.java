@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import util.Encriptacion;
 import util.Mensaje;
 import webService.ConsultaMoneda;
-import webService.ConsultaMonedaSingleton;
+import logicacreacional.ConsultaMonedaSingleton;
 /**
  *
  * @author Cristi Martínez

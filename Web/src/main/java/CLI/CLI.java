@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logicacreacional.ConsultaMonedaSingleton;
 import logicadenegocios.Operacion;
 import util.ComparatorApellido;
 import util.Encriptacion;

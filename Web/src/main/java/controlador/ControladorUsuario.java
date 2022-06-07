@@ -53,7 +53,7 @@ import util.Mensaje;
 //import util.Mensaje;
 import validacion.ExpresionesRegulares;
 import webService.ConsultaMoneda;
-import webService.ConsultaMonedaSingleton;
+import logicacreacional.ConsultaMonedaSingleton;
 
 /**
  *

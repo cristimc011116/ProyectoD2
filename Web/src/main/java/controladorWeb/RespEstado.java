@@ -30,7 +30,7 @@ import logicadenegocios.Operacion;
 import logicadenegocios.Persona;
 import util.Encriptacion;
 import webService.ConsultaMoneda;
-import webService.ConsultaMonedaSingleton;
+import logicacreacional.ConsultaMonedaSingleton;
 
 /**
  *
