@@ -40,7 +40,7 @@ public class ConsultarEstatus extends HttpServlet {
             out.println("<title>Consultar estatus</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1 align=\"center\">Proceda a consultar el saldo de su cuenta</h1>");
+            out.println("<h1 align=\"center\">Proceda a consultar el estatus de su cuenta</h1>");
             out.println("<br>");
             out.println("<br>");
             out.println("<div align=\"center\">Complete los datos</div>");

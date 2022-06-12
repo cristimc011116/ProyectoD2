@@ -45,6 +45,7 @@ public class ConsultaRegistrosCLI extends HttpServlet {
         String BitacorasXML = imprimirArchivosXML(nombre);
         String BitacorasCSV = imprimirArchivosCSV(nombre);
         String BitacorasTP = imprimirArchivosTXT(nombre);
+        
        
             
             //imprimir texto

@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class ConexionBase {
     Connection conexion = null;
     String usuario = "usuarion";
-    String password = "1234";
+    String password = "4321";
     String db = "gestorcuentas";
     String ip = "localhost";
     String puerto = "1433";
