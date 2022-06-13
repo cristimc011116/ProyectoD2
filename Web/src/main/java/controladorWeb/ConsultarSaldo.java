@@ -56,7 +56,7 @@ public class ConsultarSaldo extends HttpServlet {
             out.println("<td><input type=\"text\" name=\"pin\"/></td>");
             out.println("</tr>");
             out.println("<tr>");
-            out.println("<td>Digite la moneda del deposito</td>");
+            out.println("<td>Digite la moneda</td>");
             out.println("<td><input type=\"text\" name=\"moneda\"/></td>");
             out.println("</tr>");
             out.println("<tr>");

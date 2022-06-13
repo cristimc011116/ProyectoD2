@@ -190,14 +190,12 @@ public class Cuenta implements Comparable<Cuenta>{
     }
 
     public static void setExchangeRate(Operacion pExchangeRate, String pNumCuenta) throws ClassNotFoundException {
-        System.out.println("ACAA2");
         exchangeRate = pExchangeRate;
         Cuenta cuenta = CuentaDAO.obtenerCuenta(pNumCuenta);
         RegistroXML registroxml = new RegistroXML(cuenta);
         RegistroTramaPlana registrotp = new RegistroTramaPlana(cuenta);
         RegistroCSV registrocsv = new RegistroCSV(cuenta);
         notifyAllObservers();
-        System.out.println("ACAA3");
     }
     
     public static void notifyAllObservers(){

@@ -4,7 +4,6 @@
  */
 package util;
 
-import static util.Translator.traducir;
 
 /**
  *
@@ -20,8 +19,8 @@ public class IdiomaCorreoDecorator extends CorreoElectronicoDecorator{
     }
     
     private static void setIdiomaCorreo(CorreoElectronico pDecoratedCorreo, String destinatario, String asunto, String cuerpo) throws Exception{
-        String traducido = traducir(cuerpo);
-        String mensaje = cuerpo + "\n" + traducir(cuerpo);
+        Translator g = Translator.getInstance();
+        String mensaje = cuerpo + "\n" + g.translateText(cuerpo, "auto", "en");
         decoratedCorreo.enviarCorreo(destinatario,asunto,mensaje);
     }
 }
